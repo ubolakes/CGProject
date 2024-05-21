@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Cache-Control" content="no-cache">
+
+        <title>CG Project</title>
+    </head>
+
+    <body>
+        <canvas id="canvas" width="400" height="400"></canvas>
+    </body>
+
+    <!-- vertex shader -->
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        // TODO: write the vertex shader
+        attribute vec3 position;
+        uniform mat4 Pmatrix;
+        uniform mat4 Vmatrix;
+        uniform mat4 Mmatrix;
+
+        void main(void){
+            gl_Position = Pmatrix*Vmatrix*Mmatrix*vec4(position, 1.0);
+        }
+
+    </script>
+    <!-- fragment shader -->
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        //TODO: write the fragment shader
+        void main(void){
+            gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+        }
+    </script>
+    <!-- including JS source files -->
+    <script type="text/javascript" src="resources/webgl-utils.js"></script>
+    <script type="text/javascript" src="resources/m4.js"></script>
+    <script type="text/javascript" src="resources/dat.gui.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+
+</html>
