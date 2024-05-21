@@ -26,13 +26,18 @@ LoadMesh(gl, mesh);
 
 // creating shader program using webgl-utils.js
 var shaderprogram = webglUtils.createProgramFromScripts(gl, ["vertex-shader", "fragment-shader"]);
+gl.useProgram(shaderprogram); // using the program
 
 // TODO: associating attributes to vertex shader
-var _Pmatrix = gl.getUniformLocation(shaderprogram, "Pmatrix");
-var _Vmatrix = gl.getUniformLocation(shaderprogram, "Vmatrix");
-var _Mmatrix = gl.getUniformLocation(shaderprogram, "Mmatrix");
+var _Pmatrix = gl.getUniformLocation(shaderprogram, "u_Pmatrix");
+var _Vmatrix = gl.getUniformLocation(shaderprogram, "u_Vmatrix");
+var _Mmatrix = gl.getUniformLocation(shaderprogram, "u_Mmatrix");
 
-// TODO: bind vertex buffer
+// looking for buffers location
+var positionLocation = gl.getAttribLocation(shaderprogram, "a_positions");
+var normalLocation = gl.getAttribLocation(shaderprogram, "a_normal");
+var texcoordLocation = gl.getAttribLocation(shaderprogram, "a_texcoord");
+
 // buffer for positions
 var positionBuffer = gl.createBuffer(); // creating buffer
 gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer); // buffer binding
@@ -48,14 +53,42 @@ var texcoordBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texcoords), gl.STATIC_DRAW);
 
+// setting material uniforms
+gl.uniform3fv(gl.getUniformLocation(shaderprogram, "ambient"), ambient);
+gl.uniform3fv(gl.getUniformLocation(shaderprogram, "diffuse"), diffuse);
+gl.uniform3fv(gl.getUniformLocation(shaderprogram, "specular"), specular);
+gl.uniform3fv(gl.getUniformLocation(shaderprogram, "emissive"), emissive);
+gl.uniform1f(gl.getUniformLocation(shaderprogram, "shininess"), shininess);
+gl.uniform1f(gl.getUniformLocation(shaderprogram, "opacity"), opacity);
 
+// setting lights color
+var ambientLight = [0.2, 0.2, 0.2];
+var colorLight = [1.0, 1.0, 1.0]; // white
+// setting light uniforms
+gl.uniform3fv(gl.getUniformLocation(shaderprogram, "u_ambientLight"), ambientLight);
+gl.uniform3fv(gl.getUniformLocation(shaderprogram, "u_colorLight"), colorLight);
+// TODO: add light direction
 
+// setting parameters to determine how to get data out of positionBuffer
+var size = 3;
+var type = gl.FLOAT;
+var normalize = false;
+var stride = 0;
+var offset = 0;
 
-
-
-// TODO: bind color/texture buffer
-
-gl.useProgram(shaderprogram);
+// position location
+gl.enableVertexAttribArray(positionLocation); // enabling position location
+gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer); // binding position buffer
+gl.vertexAttribPointer(positionLocation, size, type, normalize, stride, offset);
+// normal location
+gl.enableVertexAttribArray(normalLocation);// enabling the normal attribute
+gl.bindBuffer(gl.ARRAY_BUFFER, normalsBuffer);
+gl.vertexAttribPointer(normalLocation, size, type, normalize, stride, offset);
+// texture coordinates location
+gl.enableVertexAttribArray(texcoordLocation);
+gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+size = 2;
+gl.vertexAttribPointer(texcoordLocation, size, type, normalize, stride, offset);
 
 // support functions
 // TODO: move it to a more appropriate file or location

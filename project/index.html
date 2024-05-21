@@ -1,3 +1,8 @@
+<!--
+    TODO:
+    add author and contact
+-->
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,24 +18,68 @@
 
     <!-- vertex shader -->
     <script id="vertex-shader" type="x-shader/x-vertex">
-        // TODO: write the vertex shader
-        attribute vec3 position;
-        uniform mat4 Pmatrix;
-        uniform mat4 Vmatrix;
-        uniform mat4 Mmatrix;
+        // attributes
+        attribute vec4 a_position;
+        attribute vec3 a_normal;
+        attribute vec2 a_texcoord;
+        
+        // uniforms
+        uniform mat4 u_Pmatrix;
+        uniform mat4 u_Vmatrix;
+        uniform mat4 u_Mmatrix; // it's the equivalent of u_world
+
+        // varying
+        varying vec3 v_normal;
+        varying vec2 v_texcoord;
 
         void main(void){
-            gl_Position = Pmatrix*Vmatrix*Mmatrix*vec4(position, 1.0);
+            gl_Position = u_Pmatrix*u_Vmatrix*u_Mmatrix*vec4(a_position, 1.0);
+            v_normal = mat3(u_Mmatrix) * a_normal;
+            v_texcoord = a_texcoord;
         }
 
     </script>
     <!-- fragment shader -->
     <script id="fragment-shader" type="x-shader/x-fragment">
         //TODO: write the fragment shader
+        precision highp float; // what's the meaning
+        
+        // uniforms
+        uniform vec3 ambient;
+        uniform vec3 diffuse;
+        uniform vec3 specular;
+        uniform vec3 emissive;
+        uniform float shininess;
+        uniform float opacity;
+        uniform vec3 u_ambientLight;
+        uniform vec3 u_colorLight;
+        uniform sampler2D diffuseMap;
+
+        varying vec3 v_normal;
+        varying vec2 v_texcoord;
+        
         void main(void){
-            gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+            vec3 normal = normalize(v_normal);
+            
+            // TODO: surfaceToViewDirection
+            //vec3 halfVector = normalize(u_lightDirection + surfaceToViewDirection);
+
+            float fakeLight = dot(u_lightDirection, normal) * 0.5 + 0.5;
+            float specularLight = clamp(dot(normal, halfVector), 0.0, 1.0);
+        
+            vec4 diffuseMapColor = texture2D(diffuseMap, v_texcoord);
+            vec3 effectiveDiffuse = diffuse * diffuseMapColor.rgb * u_colorLight.rgb;
+            float effectiveOpacity = opacity * diffuseMapColor.a;
+
+            gl_FragColor = vec4(
+                emissive +
+                ambient * u_ambientLight +
+                specular * pow(specularLight, shininess),
+                effectiveOpacity
+            );
         }
     </script>
+
     <!-- including JS source files -->
     <script type="text/javascript" src="resources/webgl-utils.js"></script>
     <script type="text/javascript" src="resources/m4.js"></script>
