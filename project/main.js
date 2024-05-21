@@ -1,8 +1,28 @@
+/*TODO:
+    add author and contact */
+//"use strict"; // necessary? what's the meaning
+
 var canvas = document.getElementById("canvas"); // getting canvas from HTML file
 gl = canvas.getContext("webgl"); // getting webgl context from canvas
 
-// TODO: add geometry from loaded meshes
+// variables to save geometry of meshes
+var mesh = new Array();
+var positions = [];
+var normals = [];
+var texcoords = [];
+var numVertices
+// variables to save illuminations info
+var ambient;
+var diffuse;
+var specular;
+var emissive;
+var shininess;
+var opacity;
 
+// setting path for required mesh
+mesh.sourceMesh = 'TODO';
+// calling the LoadMesh function
+LoadMesh(gl, mesh);
 
 // creating shader program using webgl-utils.js
 var shaderprogram = webglUtils.createProgramFromScripts(gl, ["vertex-shader", "fragment-shader"]);
@@ -13,6 +33,25 @@ var _Vmatrix = gl.getUniformLocation(shaderprogram, "Vmatrix");
 var _Mmatrix = gl.getUniformLocation(shaderprogram, "Mmatrix");
 
 // TODO: bind vertex buffer
+// buffer for positions
+var positionBuffer = gl.createBuffer(); // creating buffer
+gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer); // buffer binding
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW); // buffer loading
+
+// buffer for normals
+var normalsBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, normalsBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
+
+// buffer for texture coordinates
+var texcoordBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texcoords), gl.STATIC_DRAW);
+
+
+
+
+
 
 // TODO: bind color/texture buffer
 
