@@ -27,14 +27,18 @@
         uniform mat4 u_Pmatrix;
         uniform mat4 u_Vmatrix;
         uniform mat4 u_Mmatrix; // it's the equivalent of u_world
+        uniform vec3 u_viewWorldPosition;
 
         // varying
         varying vec3 v_normal;
+        varying vec3 v_surfaceToView;
         varying vec2 v_texcoord;
 
         void main(void){
-            gl_Position = u_Pmatrix*u_Vmatrix*u_Mmatrix*vec4(a_position, 1.0);
+            vec4 worldPosition = u_Mmatrix * a_position;
+            gl_Position = u_Pmatrix * u_Vmatrix * worldPosition;
             v_normal = mat3(u_Mmatrix) * a_normal;
+            v_surfaceToView = u_viewWorldPosition - worldPosition.xyz; 
             v_texcoord = a_texcoord;
         }
 
@@ -43,7 +47,7 @@
     <script id="fragment-shader" type="x-shader/x-fragment">
         //TODO: write the fragment shader
         precision highp float; // what's the meaning
-        
+
         // uniforms
         uniform vec3 ambient;
         uniform vec3 diffuse;
@@ -51,18 +55,20 @@
         uniform vec3 emissive;
         uniform float shininess;
         uniform float opacity;
+        uniform vec3 u_lightDirection;
         uniform vec3 u_ambientLight;
         uniform vec3 u_colorLight;
         uniform sampler2D diffuseMap;
 
         varying vec3 v_normal;
+        varying vec3 v_surfaceToView;
         varying vec2 v_texcoord;
         
         void main(void){
             vec3 normal = normalize(v_normal);
             
-            // TODO: surfaceToViewDirection
-            //vec3 halfVector = normalize(u_lightDirection + surfaceToViewDirection);
+            vec3 surfaceToViewDirection = normalize(v_surfaceToView);
+            vec3 halfVector = normalize(u_lightDirection + surfaceToViewDirection);
 
             float fakeLight = dot(u_lightDirection, normal) * 0.5 + 0.5;
             float specularLight = clamp(dot(normal, halfVector), 0.0, 1.0);

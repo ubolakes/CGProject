@@ -20,7 +20,7 @@ var shininess;
 var opacity;
 
 // setting path for required mesh
-mesh.sourceMesh = 'TODO';
+mesh.sourceMesh = 'data/boeing/boeing_3.obj'; // using test mesh imported from class
 // calling the LoadMesh function
 LoadMesh(gl, mesh);
 
@@ -32,6 +32,10 @@ gl.useProgram(shaderprogram); // using the program
 var _Pmatrix = gl.getUniformLocation(shaderprogram, "u_Pmatrix");
 var _Vmatrix = gl.getUniformLocation(shaderprogram, "u_Vmatrix");
 var _Mmatrix = gl.getUniformLocation(shaderprogram, "u_Mmatrix");
+
+// TODO: find an appropriate place
+var _viewWorldPosition = gl.getUniformLocation(shaderprogram, "u_viewWorldPosition");
+gl.uniform3fv(gl.getUniformLocation(shaderprogram, "u_lightDirection"), m4.normalize([-1, 3, 5]));
 
 // looking for buffers location
 var positionLocation = gl.getAttribLocation(shaderprogram, "a_positions");
@@ -183,12 +187,15 @@ var render = function(time) {
     // gl.uniformMatrix4fv(_Vmatrix, false, view_matrix); 
     gl.uniformMatrix4fv(_Mmatrix, false, mo_matrix);
 
+    gl.uniform3fv(_viewWorldPosition, camera);
+
     // TODO: add buffers
     //gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
 
     // drawing the scene
-    gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
-
+    //gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+    gl.drawArrays(gl.TRIANGLES, 0, numVertices);
+    
     window.requestAnimationFrame(render); 
 };
 
