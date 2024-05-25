@@ -128,29 +128,44 @@ var drag = false;
 var old_x, old_y;
 var dX = 0, dY = 0;
 
-// binding
-canvas.onmousedown = mouseDown;
-canvas.onmouseup = mouseUp;
-canvas.mouseout = mouseUp;
-canvas.onmousemove = mouseMove;
-
 // functions
 var mouseDown = function(e){
-// TODO
+    drag = true;
+    old_x = e.pageX, old_y = e.pageY;
+    e.preventDefault();
+    return false;
 };
 
 var mouseUp = function(e) {
-// TODO
+    // disabling drag
+    if (drag) drag = false;
 };
 
 var mouseMove = function(e) {
-// TODO
+    if (!drag)
+        return false;
+    // updating THETA and PHI
+    dX = (e.pageX - old_x) * 2 * Math.PI / canvas.width;
+    dY = (e.pageY - old_y) * 2 * Math.PI / canvas.height;
+    THETA += dX;
+    PHI += dY;
+    // updating old params
+    old_x = e.pageX, old_y = e.pageY;
+    e.preventDefault();
 };
 
-var onWheel = function(e) {
-// TODO
-/*look at  */
-};
+var mouseOver = function(e) {
+    // enabling zoom in and out
+    zoom_enabled = true;
+    console.log("Zoom enabled: "+ zoom_enabled);
+}
+
+// binding
+canvas.onmousedown = mouseDown;
+canvas.onmouseup = mouseUp;
+canvas.onmouseout = mouseUp;
+canvas.onmousemove = mouseMove;
+
 
 // render function
 var old_t = 0;
@@ -170,12 +185,12 @@ var render = function(time) {
     m4.identity(mo_matrix);
     m4.yRotate(mo_matrix, THETA, mo_matrix);
     m4.xRotate(mo_matrix, PHI, mo_matrix);
-
     old_t = time;
 
     // tests
     gl.enable(gl.DEPTH_TEST);
-    // gl.depthFunc(gl.LEQUAL); 
+    // gl.depthFunc(gl.LEQUAL);
+
     // canvas cleaning
     gl.clearColor(0.75, 0.75, 0.75, 1); 
     gl.clearDepth(1.0);
