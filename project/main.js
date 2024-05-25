@@ -1,6 +1,10 @@
-/*TODO:
-    add author and contact */
-//"use strict"; // necessary? what's the meaning
+/*
+Author: Umberto Laghi
+E-mail: umberto.laghi@studio.unibo.it
+Github: @ubolakes
+*/
+
+"use strict"; // necessary? what's the meaning
 
 // range for D
 const max_D = 5; // to be defined
