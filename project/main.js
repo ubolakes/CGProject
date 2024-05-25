@@ -86,6 +86,12 @@ var texcoordBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texcoords), gl.STATIC_DRAW);
 
+// translating mesh points
+var Tx = 0.0, Ty = 0.0, Tz = -10.0; // setting the translation vector
+// passing th translation vector to the vertex shader 
+var translation = gl.getUniformLocation(shaderprogram, "u_translation");
+gl.uniform4f(translation, Tx, Ty, Tz, 0.0);
+
 // setting material uniforms
 gl.uniform3fv(gl.getUniformLocation(shaderprogram, "ambient"), ambient);
 gl.uniform3fv(gl.getUniformLocation(shaderprogram, "diffuse"), diffuse);
