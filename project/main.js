@@ -2,6 +2,10 @@
     add author and contact */
 //"use strict"; // necessary? what's the meaning
 
+// range for D
+const max_D = 10; // to be defined
+const min_D = .1; // to be defined
+
 var canvas = document.getElementById("canvas"); // getting canvas from HTML file
 gl = canvas.getContext("webgl"); // getting webgl context from canvas
 
@@ -172,11 +176,11 @@ var mouseOver = function(e) {
 var onWheel = function(e) {
     if (!zoom_enabled)
         return false;
-
-    // changing the D accordingly to the wheel rotation
-    if(e.deltaY < 0)
+    // checking if D reached the limits
+    if(e.deltaY < 0 && D < max_D)
         D *= 1.1;
-    else D *= 0.9;
+    else if (e.deltaY > 0 && D > min_D)
+        D *= 0.9;
     //console.log("delta Y:"+ e.deltaY + " \tD:" + D);
     e.preventDefault();
 };
