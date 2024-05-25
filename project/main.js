@@ -11,7 +11,7 @@ const max_D = 5; // to be defined
 const min_D = .5; // to be defined
 
 var canvas = document.getElementById("canvas"); // getting canvas from HTML file
-gl = canvas.getContext("webgl"); // getting webgl context from canvas
+var gl = canvas.getContext("webgl"); // getting webgl context from canvas
 
 // variables to save geometry of meshes
 var mesh = new Array();
