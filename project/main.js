@@ -195,7 +195,7 @@ var mouseMove = function(e) {
 var mouseOver = function(e) {
     // enabling zoom in and out
     zoom_enabled = true;
-    console.log("Zoom enabled: "+ zoom_enabled);
+    //console.log("Zoom enabled: "+ zoom_enabled);
 }
 
 var onWheel = function(e) {
