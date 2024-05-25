@@ -125,6 +125,7 @@ gl.uniformMatrix4fv(_Vmatrix, false, view_matrix);
 // mouse events management
 var AMORTIZATION = 0.95;
 var drag = false;
+var zoom_enabled = false;
 var old_x, old_y;
 var dX = 0, dY = 0;
 
@@ -138,8 +139,16 @@ var mouseDown = function(e){
 
 var mouseUp = function(e) {
     // disabling drag
-    if (drag) drag = false;
+    drag = false;
 };
+
+var mouseOut = function(e) {
+    // disabling drag
+    drag = false
+    // disabling zoom
+    zoom_enabled = false;
+    //console.log("Zoom enabled: "+ zoom_enabled);
+}
 
 var mouseMove = function(e) {
     if (!drag)
@@ -160,11 +169,25 @@ var mouseOver = function(e) {
     console.log("Zoom enabled: "+ zoom_enabled);
 }
 
+var onWheel = function(e) {
+    if (!zoom_enabled)
+        return false;
+
+    // changing the D accordingly to the wheel rotation
+    if(e.deltaY < 0)
+        D *= 1.1;
+    else D *= 0.9;
+    //console.log("delta Y:"+ e.deltaY + " \tD:" + D);
+    e.preventDefault();
+};
+
 // binding
 canvas.onmousedown = mouseDown;
 canvas.onmouseup = mouseUp;
-canvas.onmouseout = mouseUp;
+canvas.onmouseout = mouseOut;
 canvas.onmousemove = mouseMove;
+canvas.onmouseover = mouseOver;
+canvas.onwheel = onWheel;
 
 
 // render function
@@ -185,6 +208,7 @@ var render = function(time) {
     m4.identity(mo_matrix);
     m4.yRotate(mo_matrix, THETA, mo_matrix);
     m4.xRotate(mo_matrix, PHI, mo_matrix);
+    m4.scale(mo_matrix, D, D, D, mo_matrix);
     old_t = time;
 
     // tests
