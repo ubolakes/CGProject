@@ -38,7 +38,7 @@ var _viewWorldPosition = gl.getUniformLocation(shaderprogram, "u_viewWorldPositi
 gl.uniform3fv(gl.getUniformLocation(shaderprogram, "u_lightDirection"), m4.normalize([-1, 3, 5]));
 
 // looking for buffers location
-var positionLocation = gl.getAttribLocation(shaderprogram, "a_positions");
+var positionLocation = gl.getAttribLocation(shaderprogram, "a_position");
 var normalLocation = gl.getAttribLocation(shaderprogram, "a_normal");
 var texcoordLocation = gl.getAttribLocation(shaderprogram, "a_texcoord");
 
