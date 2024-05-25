@@ -3,8 +3,8 @@
 //"use strict"; // necessary? what's the meaning
 
 // range for D
-const max_D = 10; // to be defined
-const min_D = .1; // to be defined
+const max_D = 5; // to be defined
+const min_D = .5; // to be defined
 
 var canvas = document.getElementById("canvas"); // getting canvas from HTML file
 gl = canvas.getContext("webgl"); // getting webgl context from canvas
@@ -22,6 +22,31 @@ var specular;
 var emissive;
 var shininess;
 var opacity;
+
+/* TODO: add parameters for dat.GUI
+
+// dat.gui
+var controls = {
+    ciao: true// TODO: se parameters to control
+}
+
+function define_gui(){
+    var gui = new dat.GUI();
+    // do this for every parameter in range
+    gui.add(controls, "<value in controls>")
+       .min(min_value)
+       .max(max_value)
+       .step()
+       .onChange(function() { render(); });
+    // boolean params don't need any min or max
+    gui.add(controls, "ciao");
+}
+
+// adding gui to the scene
+window.onload = function init() {
+    define_gui();
+}
+*/
 
 // setting path for required mesh
 mesh.sourceMesh = 'data/boeing/boeing_3.obj'; // using test mesh imported from class
