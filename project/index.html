@@ -60,7 +60,7 @@
         uniform vec3 u_lightDirection;
         uniform vec3 u_ambientLight;
         uniform vec3 u_colorLight;
-        uniform sampler2D diffuseMap;
+        uniform sampler2D u_texture;
 
         varying vec3 v_normal;
         varying vec3 v_surfaceToView;
@@ -75,7 +75,7 @@
             float fakeLight = dot(u_lightDirection, normal) * 0.5 + 0.5;
             float specularLight = clamp(dot(normal, halfVector), 0.0, 1.0);
         
-            vec4 diffuseMapColor = texture2D(diffuseMap, v_texcoord);
+            vec4 diffuseMapColor = texture2D(u_texture, v_texcoord);
             vec3 effectiveDiffuse = diffuse * diffuseMapColor.rgb * u_colorLight.rgb;
             float effectiveOpacity = opacity * diffuseMapColor.a;
 
