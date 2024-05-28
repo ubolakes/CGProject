@@ -7,25 +7,18 @@ Github: @ubolakes
 "use strict"; // necessary? what's the meaning
 
 // range for D
-const max_D = 5; // to be defined
-const min_D = .5; // to be defined
+const max_D = 100; // to be defined
+const min_D = .01; // to be defined
 
 var canvas = document.getElementById("canvas"); // getting canvas from HTML file
 var gl = canvas.getContext("webgl"); // getting webgl context from canvas
 
 // variables to save geometry of meshes
-var mesh = new Array();
-var positions = [];
-var normals = [];
-var texcoords = [];
-var numVertices
-// variables to save illuminations info
-var ambient;
-var diffuse;
-var specular;
-var emissive;
-var shininess;
-var opacity;
+var staticMesh = new Array();
+var staticMeshInfo;
+
+var dynMesh = new Array();
+var dynMeshInfo;
 
 /* TODO: add parameters for dat.GUI
 
@@ -53,56 +46,40 @@ window.onload = function init() {
 */
 
 // setting path for required mesh
-mesh.sourceMesh = 'data/boeing/boeing_3.obj'; // using test mesh imported from class
+staticMesh.sourceMesh = 'data/boeing/boeing_3.obj'; // using test mesh imported from class
+dynMesh.sourceMesh = 'data/ruota/ruota_davanti_gomma.obj';
 // calling the LoadMesh function
-LoadMesh(gl, mesh);
+staticMeshInfo = LoadMesh(gl, staticMesh);
+dynMeshInfo = LoadMesh(gl, dynMesh);
 
 // creating shader program using webgl-utils.js
 var shaderprogram = webglUtils.createProgramFromScripts(gl, ["vertex-shader", "fragment-shader"]);
 gl.useProgram(shaderprogram); // using the program
 
-// TODO: associating attributes to vertex shader
-var _Pmatrix = gl.getUniformLocation(shaderprogram, "u_Pmatrix");
-var _Vmatrix = gl.getUniformLocation(shaderprogram, "u_Vmatrix");
-var _Mmatrix = gl.getUniformLocation(shaderprogram, "u_Mmatrix");
-
-// TODO: find an appropriate place
-var _viewWorldPosition = gl.getUniformLocation(shaderprogram, "u_viewWorldPosition");
-gl.uniform3fv(gl.getUniformLocation(shaderprogram, "u_lightDirection"), m4.normalize([-1, 3, 5]));
-
-// looking for buffers location
+// attributes location
 var positionLocation = gl.getAttribLocation(shaderprogram, "a_position");
 var normalLocation = gl.getAttribLocation(shaderprogram, "a_normal");
 var texcoordLocation = gl.getAttribLocation(shaderprogram, "a_texcoord");
 
-// buffer for positions
-var positionBuffer = gl.createBuffer(); // creating buffer
-gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer); // buffer binding
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW); // buffer loading
-
-// buffer for normals
-var normalsBuffer = gl.createBuffer();
-gl.bindBuffer(gl.ARRAY_BUFFER, normalsBuffer);
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
-
-// buffer for texture coordinates
-var texcoordBuffer = gl.createBuffer();
-gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texcoords), gl.STATIC_DRAW);
-
-// translating mesh points
-var Tx = 0.0, Ty = 0.0, Tz = -10.0; // setting the translation vector
-// passing th translation vector to the vertex shader 
+// uniforms location
+//vertex shader
+var _Pmatrix = gl.getUniformLocation(shaderprogram, "u_Pmatrix");
+var _Vmatrix = gl.getUniformLocation(shaderprogram, "u_Vmatrix");
+var _Mmatrix = gl.getUniformLocation(shaderprogram, "u_Mmatrix");
+var _viewWorldPosition = gl.getUniformLocation(shaderprogram, "u_viewWorldPosition");
 var translationLocation = gl.getUniformLocation(shaderprogram, "u_translation");
-gl.uniform4f(translationLocation, Tx, Ty, Tz, 0.0);
-
-// setting material uniforms
-gl.uniform3fv(gl.getUniformLocation(shaderprogram, "ambient"), ambient);
-gl.uniform3fv(gl.getUniformLocation(shaderprogram, "diffuse"), diffuse);
-gl.uniform3fv(gl.getUniformLocation(shaderprogram, "specular"), specular);
-gl.uniform3fv(gl.getUniformLocation(shaderprogram, "emissive"), emissive);
-gl.uniform1f(gl.getUniformLocation(shaderprogram, "shininess"), shininess);
-gl.uniform1f(gl.getUniformLocation(shaderprogram, "opacity"), opacity);
+// fragment shader
+var ambientLocation = gl.getUniformLocation(shaderprogram, "u_ambient");
+var diffuseLocation = gl.getUniformLocation(shaderprogram, "u_diffuse");
+var specularLocation = gl.getUniformLocation(shaderprogram, "u_specular");
+var emissiveLocation = gl.getUniformLocation(shaderprogram, "u_emissive");
+var shininessLocation = gl.getUniformLocation(shaderprogram, "u_shininess");
+var opacityLocation = gl.getUniformLocation(shaderprogram, "u_opacity");
+var lightDirectionLocation = gl.getUniformLocation(shaderprogram, "u_lightDirection");
+//, m4.normalize([-1, 3, 5])); to put in lightDirection uniform
+var ambientLightLocation = gl.getUniformLocation(shaderprogram, "u_ambientLight");
+var colorLightLocation = gl.getUniformLocation(shaderprogram, "u_colorLight");
+var textureLocation = gl.getUniformLocation(shaderprogram, "u_texture");
 
 // setting lights color
 var ambientLight = [0.2, 0.2, 0.2];
@@ -119,20 +96,6 @@ var normalize = false;
 var stride = 0;
 var offset = 0;
 
-// position location
-gl.enableVertexAttribArray(positionLocation); // enabling position location
-gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer); // binding position buffer
-gl.vertexAttribPointer(positionLocation, size, type, normalize, stride, offset);
-// normal location
-gl.enableVertexAttribArray(normalLocation);// enabling the normal attribute
-gl.bindBuffer(gl.ARRAY_BUFFER, normalsBuffer);
-gl.vertexAttribPointer(normalLocation, size, type, normalize, stride, offset);
-// texture coordinates location
-gl.enableVertexAttribArray(texcoordLocation);
-gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
-size = 2;
-gl.vertexAttribPointer(texcoordLocation, size, type, normalize, stride, offset);
-
 // support functions
 // TODO: move it to a more appropriate file or location
 function degToRad(d){
@@ -143,8 +106,7 @@ function degToRad(d){
 var aspect = gl.canvas.clientWidth/gl.canvas.clientHeight;
 var zNear = 1;
 var zFar = 100;
-var fov = 40;
-var proj_matrix = m4.perspective(degToRad(fov), aspect, zNear, zFar);
+var fov = degToRad(40);
 
 // defining view_matrix
 var THETA = 0;
@@ -158,7 +120,6 @@ var up = [0, 1, 0];
 var view_matrix = m4.inverse(m4.lookAt(camera, target, up));
 
 // binding computed matrices to shader inputs
-gl.uniformMatrix4fv(_Pmatrix, false, proj_matrix);
 gl.uniformMatrix4fv(_Vmatrix, false, view_matrix);
 
 // mouse events management
@@ -213,10 +174,10 @@ var onWheel = function(e) {
         return false;
     // checking if D reached the limits
     if(e.deltaY < 0 && D < max_D)
-        D *= 1.1;
+        fov *= 1.1;
     else if (e.deltaY > 0 && D > min_D)
-        D *= 0.9;
-    //console.log("delta Y:"+ e.deltaY + " \tD:" + D);
+        fov *= 0.9;
+    //console.log("delta Y:"+ e.deltaY + " \tfov:" + fov);
     e.preventDefault();
 };
 
@@ -227,7 +188,6 @@ canvas.onmouseout = mouseOut;
 canvas.onmousemove = mouseMove;
 canvas.onmouseover = mouseOver;
 canvas.onwheel = onWheel;
-
 
 // render function
 var old_t = 0;
@@ -247,7 +207,7 @@ var render = function(time) {
     m4.identity(mo_matrix);
     m4.yRotate(mo_matrix, THETA, mo_matrix);
     m4.xRotate(mo_matrix, PHI, mo_matrix);
-    m4.scale(mo_matrix, D, D, D, mo_matrix);
+    m4.scale(mo_matrix, 0.75, 0.75, 0.75, mo_matrix);
     old_t = time;
 
     // tests
@@ -261,19 +221,121 @@ var render = function(time) {
     gl.viewport(0.0, 0.0, canvas.width, canvas.height); 
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    // gl.uniformMatrix4fv(_Pmatrix, false, proj_matrix); 
-    // gl.uniformMatrix4fv(_Vmatrix, false, view_matrix); 
+    /* in the render function the proj_matrix
+     can be modified at runtime, giving the possibility
+     to zoom in and out */
+    var proj_matrix = m4.perspective(fov, aspect, zNear, zFar);
+
+    gl.uniformMatrix4fv(_Pmatrix, false, proj_matrix); 
+    gl.uniformMatrix4fv(_Vmatrix, false, view_matrix); 
     gl.uniformMatrix4fv(_Mmatrix, false, mo_matrix);
 
     gl.uniform3fv(_viewWorldPosition, camera);
 
-    // TODO: add buffers
-    //gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
+    // creating buffers
+    var positionBuffer = gl.createBuffer();
+    var normalsBuffer = gl.createBuffer();
+    var texcoordBuffer = gl.createBuffer();
 
-    // drawing the scene
-    //gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
-    gl.drawArrays(gl.TRIANGLES, 0, numVertices);
-    
+    /*==== staticMesh ====*/
+    // buffer binding
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(staticMeshInfo.positions), gl.STATIC_DRAW);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, normalsBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(staticMeshInfo.normals), gl.STATIC_DRAW);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(staticMeshInfo.texcoords), gl.STATIC_DRAW);
+
+    // translation
+    var tx = -1.5, ty = 0.0, tz =0.0;
+    gl.uniform4f(translationLocation, tx, ty, tz, 0.0);
+
+    // attributes management
+    size = 3; // verify if it's necessary
+
+    gl.enableVertexAttribArray(positionLocation);
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.vertexAttribPointer(positionLocation, size, type, normalize, stride, offset);
+
+    gl.enableVertexAttribArray(normalLocation);
+    gl.bindBuffer(gl.ARRAY_BUFFER, normalsBuffer);
+    gl.vertexAttribPointer(normalLocation, size, type, normalize, stride, offset);
+
+    gl.enableVertexAttribArray(texcoordLocation);
+    gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+    size = 2;
+    gl.vertexAttribPointer(texcoordLocation, size, type, normalize, stride, offset);
+    //gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+    // setting uniforms
+    gl.uniform3fv(ambientLocation, staticMeshInfo.ambient);
+    gl.uniform3fv(diffuseLocation, staticMeshInfo.diffuse);
+    gl.uniform3fv(specularLocation, staticMeshInfo.specular);
+    gl.uniform3fv(emissiveLocation, staticMeshInfo.emissive);
+    gl.uniform1f(shininessLocation, staticMeshInfo.shininess);
+    gl.uniform1f(opacityLocation, staticMeshInfo.opacity);
+
+    // setting the texture
+    gl.uniform1i(textureLocation, 0);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, staticMeshInfo.texture);
+
+    // draw function
+    gl.drawArrays(gl.TRIANGLES, 0, staticMeshInfo.numVertices);
+
+    /*==== dynMesh ====*/
+    // buffer binding
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(dynMeshInfo.positions), gl.STATIC_DRAW);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    gl.bindBuffer(gl.ARRAY_BUFFER, normalsBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(dynMeshInfo.normals), gl.STATIC_DRAW);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(dynMeshInfo.texcoords), gl.STATIC_DRAW);
+
+    // translation
+    tx = 1.0, ty = 0.0, tz =0.0;
+    gl.uniform4f(translationLocation, tx, ty, tz, 0.0);
+
+    // attributes management
+    size = 3; // verify if it's necessary
+
+    gl.enableVertexAttribArray(positionLocation);
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.vertexAttribPointer(positionLocation, size, type, normalize, stride, offset);
+
+    gl.enableVertexAttribArray(normalLocation);
+    gl.bindBuffer(gl.ARRAY_BUFFER, normalsBuffer);
+    gl.vertexAttribPointer(normalLocation, size, type, normalize, stride, offset);
+
+    gl.enableVertexAttribArray(texcoordLocation);
+    gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+    size = 2;
+    gl.vertexAttribPointer(texcoordLocation, size, type, normalize, stride, offset);
+    //gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+    // setting uniforms
+    gl.uniform3fv(ambientLocation, dynMeshInfo.ambient);
+    gl.uniform3fv(diffuseLocation, dynMeshInfo.diffuse);
+    gl.uniform3fv(specularLocation, dynMeshInfo.specular);
+    gl.uniform3fv(emissiveLocation, dynMeshInfo.emissive);
+    gl.uniform1f(shininessLocation, dynMeshInfo.shininess);
+    gl.uniform1f(opacityLocation, dynMeshInfo.opacity);
+
+    // setting the texture
+    gl.uniform1i(textureLocation, 1);
+    gl.activeTexture(gl.TEXTURE1);
+    gl.bindTexture(gl.TEXTURE_2D, dynMeshInfo.texture);
+
+    // draw function
+    gl.drawArrays(gl.TRIANGLES, 0, dynMeshInfo.numVertices);
+
     window.requestAnimationFrame(render); 
 };
 
