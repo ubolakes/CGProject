@@ -20,30 +20,9 @@ var staticMeshInfo;
 var dynMesh = new Array();
 var dynMeshInfo;
 
-/* TODO: add parameters for dat.GUI
+// adding dat.gui to the scene
+window.onload = define_gui();
 
-// dat.gui
-var controls = {
-    ciao: true// TODO: se parameters to control
-}
-
-function define_gui(){
-    var gui = new dat.GUI();
-    // do this for every parameter in range
-    gui.add(controls, "<value in controls>")
-       .min(min_value)
-       .max(max_value)
-       .step()
-       .onChange(function() { render(); });
-    // boolean params don't need any min or max
-    gui.add(controls, "ciao");
-}
-
-// adding gui to the scene
-window.onload = function init() {
-    define_gui();
-}
-*/
 
 // setting path for required mesh
 staticMesh.sourceMesh = 'data/boeing/boeing_3.obj'; // using test mesh imported from class
@@ -83,10 +62,8 @@ var textureLocation = gl.getUniformLocation(shaderprogram, "u_texture");
 
 // setting lights color
 var ambientLight = [0.2, 0.2, 0.2];
-var colorLight = [1.0, 1.0, 1.0]; // white
 // setting light uniforms
 gl.uniform3fv(gl.getUniformLocation(shaderprogram, "u_ambientLight"), ambientLight);
-gl.uniform3fv(gl.getUniformLocation(shaderprogram, "u_colorLight"), colorLight);
 // TODO: add light direction
 
 // setting parameters to determine how to get data out of positionBuffer
@@ -140,11 +117,19 @@ canvas.onwheel = onWheel;
 // render function
 var old_t = 0;
 var rotationRadians = degToRad(0);
+var rotationSpeed = 0;
+var lightBrightness = 1.0;
 
 var render = function(time) {
     time *= 0.001; // convert into seconds
     var dt = time - old_t; // computing delta time
     old_t = time;
+
+    //TODO: parameter association to dat.gui parameters
+    // this way the modification are applied instantly
+    rotationSpeed = controls.rotationSpeed;
+    lightBrightness = controls.lightBrightness;
+    var colorLight = [1.0*lightBrightness, 1.0*lightBrightness, 1.0*lightBrightness];
 
     if(!drag) { // the scene is not being moved
         dX *= AMORTIZATION;
@@ -173,12 +158,12 @@ var render = function(time) {
      to zoom in and out */
     var proj_matrix = m4.perspective(fov, aspect, zNear, zFar);
 
+    // common uniforms
     gl.uniformMatrix4fv(_Pmatrix, false, proj_matrix); 
     gl.uniformMatrix4fv(_Vmatrix, false, view_matrix); 
-    // set for each mesh?
     //gl.uniformMatrix4fv(_Mmatrix, false, mo_matrix);
-
     gl.uniform3fv(_viewWorldPosition, camera);
+    gl.uniform3fv(colorLightLocation, colorLight);
 
     // creating buffers
     var positionBuffer = gl.createBuffer();
@@ -238,7 +223,7 @@ var render = function(time) {
 
     /*==== dynMesh ====*/
     // making this mesh rotate around one of its axes
-    rotationRadians += 1.7 * dt;
+    rotationRadians += rotationSpeed * dt;
     var rotationMatrix = m4.xRotate(mo_matrix, rotationRadians);
     gl.uniformMatrix4fv(_Mmatrix, false, rotationMatrix);
     
