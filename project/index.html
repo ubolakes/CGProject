@@ -9,7 +9,6 @@
     <head>
         <meta http-equiv="Pragma" content="no-cache">
         <meta http-equiv="Cache-Control" content="no-cache">
-
         <title>CG Project</title>
     </head>
 
@@ -43,8 +42,8 @@
             v_surfaceToView = u_viewWorldPosition - worldPosition.xyz; 
             v_texcoord = a_texcoord;
         }
-
     </script>
+    
     <!-- fragment shader -->
     <script id="fragment-shader" type="x-shader/x-fragment">
         precision highp float; // what's the meaning
@@ -82,6 +81,7 @@
             gl_FragColor = vec4(
                 u_emissive +
                 u_ambient * u_ambientLight +
+                effectiveDiffuse * fakeLight +
                 u_specular * pow(specularLight, u_shininess),
                 effectiveOpacity
             );
