@@ -31,7 +31,7 @@
         uniform vec3 u_viewWorldPosition;
         uniform vec4 u_translation;
 
-        // varying
+        // varyings
         varying vec3 v_normal;
         varying vec3 v_surfaceToView;
         varying vec2 v_texcoord;
@@ -51,17 +51,18 @@
         precision highp float; // what's the meaning
 
         // uniforms
-        uniform vec3 ambient;
-        uniform vec3 diffuse;
-        uniform vec3 specular;
-        uniform vec3 emissive;
-        uniform float shininess;
-        uniform float opacity;
+        uniform vec3 u_ambient;
+        uniform vec3 u_diffuse;
+        uniform vec3 u_specular;
+        uniform vec3 u_emissive;
+        uniform float u_shininess;
+        uniform float u_opacity;
         uniform vec3 u_lightDirection;
         uniform vec3 u_ambientLight;
         uniform vec3 u_colorLight;
         uniform sampler2D u_texture;
 
+        // varyings
         varying vec3 v_normal;
         varying vec3 v_surfaceToView;
         varying vec2 v_texcoord;
@@ -76,13 +77,13 @@
             float specularLight = clamp(dot(normal, halfVector), 0.0, 1.0);
         
             vec4 diffuseMapColor = texture2D(u_texture, v_texcoord);
-            vec3 effectiveDiffuse = diffuse * diffuseMapColor.rgb * u_colorLight.rgb;
-            float effectiveOpacity = opacity * diffuseMapColor.a;
+            vec3 effectiveDiffuse = u_diffuse * diffuseMapColor.rgb * u_colorLight.rgb;
+            float effectiveOpacity = u_opacity * diffuseMapColor.a;
 
             gl_FragColor = vec4(
-                emissive +
-                ambient * u_ambientLight +
-                specular * pow(specularLight, shininess),
+                u_emissive +
+                u_ambient * u_ambientLight +
+                u_specular * pow(specularLight, u_shininess),
                 effectiveOpacity
             );
         }
