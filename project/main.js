@@ -181,7 +181,7 @@ var onWheel = function(e) {
     e.preventDefault();
 };
 
-// binding
+// binding events to handler
 canvas.onmousedown = mouseDown;
 canvas.onmouseup = mouseUp;
 canvas.onmouseout = mouseOut;
@@ -191,9 +191,12 @@ canvas.onwheel = onWheel;
 
 // render function
 var old_t = 0;
+var rotationRadians = degToRad(0);
 
 var render = function(time) {
+    time *= 0.001; // convert into seconds
     var dt = time - old_t;
+    old_t = time;
 
     if(!drag) { // the scene is not being moved
         dX *= AMORTIZATION;
@@ -208,7 +211,7 @@ var render = function(time) {
     m4.yRotate(mo_matrix, THETA, mo_matrix);
     m4.xRotate(mo_matrix, PHI, mo_matrix);
     m4.scale(mo_matrix, 0.75, 0.75, 0.75, mo_matrix);
-    old_t = time;
+    
 
     // tests
     gl.enable(gl.DEPTH_TEST);
@@ -228,7 +231,8 @@ var render = function(time) {
 
     gl.uniformMatrix4fv(_Pmatrix, false, proj_matrix); 
     gl.uniformMatrix4fv(_Vmatrix, false, view_matrix); 
-    gl.uniformMatrix4fv(_Mmatrix, false, mo_matrix);
+    // set for each mesh?
+    //gl.uniformMatrix4fv(_Mmatrix, false, mo_matrix);
 
     gl.uniform3fv(_viewWorldPosition, camera);
 
@@ -238,6 +242,9 @@ var render = function(time) {
     var texcoordBuffer = gl.createBuffer();
 
     /*==== staticMesh ====*/
+    // non-rotational matrix
+    gl.uniformMatrix4fv(_Mmatrix, false, mo_matrix);
+
     // buffer binding
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(staticMeshInfo.positions), gl.STATIC_DRAW);
@@ -285,7 +292,13 @@ var render = function(time) {
     // draw function
     gl.drawArrays(gl.TRIANGLES, 0, staticMeshInfo.numVertices);
 
+
     /*==== dynMesh ====*/
+    // making this mesh rotate around one of its axes
+    rotationRadians += 1.7 * dt;
+    var rotationMatrix = m4.xRotate(mo_matrix, rotationRadians);
+    gl.uniformMatrix4fv(_Mmatrix, false, rotationMatrix);
+    
     // buffer binding
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
