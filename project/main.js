@@ -143,7 +143,7 @@ var rotationRadians = degToRad(0);
 
 var render = function(time) {
     time *= 0.001; // convert into seconds
-    var dt = time - old_t;
+    var dt = time - old_t; // computing delta time
     old_t = time;
 
     if(!drag) { // the scene is not being moved
@@ -153,25 +153,21 @@ var render = function(time) {
         PHI += dY;
     }
 
+    // window to viewport transformation
+    gl.viewport(0.0, 0.0, canvas.width, canvas.height); 
+    
+    // tests
+    gl.enable(gl.DEPTH_TEST);
+    // gl.depthFunc(gl.LEQUAL);
+    
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    
     // changing matrix values according to the changes in camera params
-    var mo_matrix = [];
-    m4.identity(mo_matrix);
+    var mo_matrix = m4.identity();
     m4.yRotate(mo_matrix, THETA, mo_matrix);
     m4.xRotate(mo_matrix, PHI, mo_matrix);
     m4.scale(mo_matrix, 0.75, 0.75, 0.75, mo_matrix);
     
-
-    // tests
-    gl.enable(gl.DEPTH_TEST);
-    // gl.depthFunc(gl.LEQUAL);
-
-    // canvas cleaning
-    gl.clearColor(0.75, 0.75, 0.75, 1); 
-    gl.clearDepth(1.0);
-    // window to viewport transformation
-    gl.viewport(0.0, 0.0, canvas.width, canvas.height); 
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
     /* in the render function the proj_matrix
      can be modified at runtime, giving the possibility
      to zoom in and out */
@@ -222,7 +218,6 @@ var render = function(time) {
     gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
     size = 2;
     gl.vertexAttribPointer(texcoordLocation, size, type, normalize, stride, offset);
-    //gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
     // setting uniforms
     gl.uniform3fv(ambientLocation, staticMeshInfo.ambient);
@@ -279,7 +274,6 @@ var render = function(time) {
     gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
     size = 2;
     gl.vertexAttribPointer(texcoordLocation, size, type, normalize, stride, offset);
-    //gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
     // setting uniforms
     gl.uniform3fv(ambientLocation, dynMeshInfo.ambient);
@@ -290,6 +284,7 @@ var render = function(time) {
     gl.uniform1f(opacityLocation, dynMeshInfo.opacity);
 
     // setting the texture
+    //gl.bindTexture(gl.TEXTURE_2D, null);
     gl.uniform1i(textureLocation, 1);
     gl.activeTexture(gl.TEXTURE1);
     gl.bindTexture(gl.TEXTURE_2D, dynMeshInfo.texture);
