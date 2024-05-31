@@ -16,13 +16,11 @@ var gl = canvas.getContext("webgl"); // getting webgl context from canvas
 // variables to save geometry of meshes
 var staticMesh = new Array();
 var staticMeshInfo;
-
 var dynMesh = new Array();
 var dynMeshInfo;
 
 // adding dat.gui to the scene
 window.onload = define_gui();
-
 
 // setting path for required mesh
 staticMesh.sourceMesh = 'data/boeing/boeing_3.obj'; // using test mesh imported from class
@@ -153,9 +151,8 @@ var render = function(time) {
     m4.xRotate(mo_matrix, PHI, mo_matrix);
     m4.scale(mo_matrix, 0.75, 0.75, 0.75, mo_matrix);
     
-    /* in the render function the proj_matrix
-     can be modified at runtime, giving the possibility
-     to zoom in and out */
+    /* in the render function the proj_matrix can be modified at runtime,
+     giving the possibility to zoom in and out */
     var proj_matrix = m4.perspective(fov, aspect, zNear, zFar);
 
     // common uniforms
@@ -245,7 +242,7 @@ var render = function(time) {
     gl.uniform4f(translationLocation, tx, ty, tz, 0.0);
 
     // attributes management
-    size = 3; // verify if it's necessary
+    size = 3;
 
     gl.enableVertexAttribArray(positionLocation);
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
