@@ -6,9 +6,9 @@ Github: @ubolakes
 
 "use strict"; // necessary? what's the meaning
 
-// range for D
-const max_D = 100; // to be defined
-const min_D = .01; // to be defined
+// range for zoom
+const max_zoom = 1.5; // to be defined
+const min_zoom = .5; // to be defined
 
 var canvas = document.getElementById("canvas"); // getting canvas from HTML file
 var gl = canvas.getContext("webgl"); // getting webgl context from canvas

@@ -49,10 +49,10 @@ var onWheel = function(e) {
     if (!zoom_enabled)
         return false;
     // checking if D reached the limits
-    if(e.deltaY < 0 && D < max_D)
+    if(e.deltaY < 0 && fov < max_zoom)
         fov *= 1.1;
-    else if (e.deltaY > 0 && D > min_D)
+    else if (e.deltaY > 0 && fov > min_zoom)
         fov *= 0.9;
-    //console.log("delta Y:"+ e.deltaY + " \tfov:" + fov);
+    console.log("delta Y:"+ e.deltaY + " \tfov:" + fov);
     e.preventDefault();
 };
