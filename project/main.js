@@ -40,10 +40,10 @@ var texcoordLocation = gl.getAttribLocation(shaderprogram, "a_texcoord");
 
 // uniforms location
 //vertex shader
-var _Pmatrix = gl.getUniformLocation(shaderprogram, "u_Pmatrix");
-var _Vmatrix = gl.getUniformLocation(shaderprogram, "u_Vmatrix");
-var _Mmatrix = gl.getUniformLocation(shaderprogram, "u_Mmatrix");
-var _viewWorldPosition = gl.getUniformLocation(shaderprogram, "u_viewWorldPosition");
+var projectionMatrixLocation = gl.getUniformLocation(shaderprogram, "u_projection");
+var viewMatrixLocation = gl.getUniformLocation(shaderprogram, "u_view");
+var worldMatrixLocation = gl.getUniformLocation(shaderprogram, "u_world");
+var viewWorldPositionLocation = gl.getUniformLocation(shaderprogram, "u_viewWorldPosition");
 var translationLocation = gl.getUniformLocation(shaderprogram, "u_translation");
 // fragment shader
 var ambientLocation = gl.getUniformLocation(shaderprogram, "u_ambient");
@@ -95,7 +95,7 @@ var up = [0, 1, 0];
 var view_matrix = m4.inverse(m4.lookAt(camera, target, up));
 
 // binding computed matrices to shader inputs
-gl.uniformMatrix4fv(_Vmatrix, false, view_matrix);
+//gl.uniformMatrix4fv(viewMatrixLocation, false, view_matrix);
 
 // mouse events management
 var AMORTIZATION = 0.95;
@@ -156,10 +156,10 @@ var render = function(time) {
     var proj_matrix = m4.perspective(fov, aspect, zNear, zFar);
 
     // common uniforms
-    gl.uniformMatrix4fv(_Pmatrix, false, proj_matrix); 
-    gl.uniformMatrix4fv(_Vmatrix, false, view_matrix); 
-    //gl.uniformMatrix4fv(_Mmatrix, false, mo_matrix);
-    gl.uniform3fv(_viewWorldPosition, camera);
+    gl.uniformMatrix4fv(projectionMatrixLocation, false, proj_matrix); 
+    gl.uniformMatrix4fv(viewMatrixLocation, false, view_matrix); 
+    //gl.uniformMatrix4fv(worldMatrixLocation, false, mo_matrix);
+    gl.uniform3fv(viewWorldPositionLocation, camera);
     gl.uniform3fv(colorLightLocation, colorLight);
 
     // creating buffers
@@ -169,7 +169,7 @@ var render = function(time) {
 
     /*==== staticMesh ====*/
     // non-rotational matrix
-    gl.uniformMatrix4fv(_Mmatrix, false, mo_matrix);
+    gl.uniformMatrix4fv(worldMatrixLocation, false, mo_matrix);
 
     // buffer binding
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
@@ -222,7 +222,7 @@ var render = function(time) {
     // making this mesh rotate around one of its axes
     rotationRadians += rotationSpeed * dt;
     var rotationMatrix = m4.xRotate(mo_matrix, rotationRadians);
-    gl.uniformMatrix4fv(_Mmatrix, false, rotationMatrix);
+    gl.uniformMatrix4fv(worldMatrixLocation, false, rotationMatrix);
     
     // buffer binding
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
