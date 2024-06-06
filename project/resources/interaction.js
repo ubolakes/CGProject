@@ -53,6 +53,6 @@ var onWheel = function(e) {
         fov *= 1.1;
     else if (e.deltaY > 0 && fov > min_zoom)
         fov *= 0.9;
-    console.log("delta Y:"+ e.deltaY + " \tfov:" + fov);
+    //console.log("delta Y:"+ e.deltaY + " \tfov:" + fov);
     e.preventDefault();
 };
