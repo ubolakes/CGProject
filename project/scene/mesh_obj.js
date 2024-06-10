@@ -101,7 +101,7 @@ class MeshObj {
             this.angle = this.angle === 360 ? 0 : this.angle + 5;
         }
 
-        if (const {bufferInfo, material} of this.mesh.parts) {
+        for (const {bufferInfo, material} of this.mesh.parts) {
             // calls gl.bindbuffer, gl.enableVertexAttribArray, gl.vertexAttribPointer
             // to pass attributes pointer to vertex shader
             webglUtils.setBuffersAndAttributes(gl, programInfo, bufferInfo);
