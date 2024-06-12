@@ -21,7 +21,7 @@ class Scene {
         }
         
         // checking if extension is supported by browser
-        this.ext = this.gl.getExtension('WEBGL_depth_texture');
+        this.ext = this.gl.getExtension("WEBGL_depth_texture");
         if (!this.ext) {
             return alert("WEBGL_depth_texture not supported!\nUse a better browser");
         }
@@ -39,7 +39,7 @@ class Scene {
 
         // storing all meshes of the scene in array
         this.mesh_list = [];
-        this.load_mesh(json_path).then(() => {});
+        this.load_mesh(jsonPath).then(() => {});
 
         // creating a camera for the scene
         const position = [10, 2, 10];   // TBD
@@ -147,27 +147,27 @@ class Scene {
         const faceInfos = [
             {
                 target: this.gl.TEXTURE_CUBE_MAP_POSITIVE_X,
-                url: "" // TODO
+                url: "./data/skybox/pos-x.jpg"
             },
             {
                 target: this.gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
-                url: "" // TODO
+                url: "./data/skybox/neg-x.jpg"
             },
             {
                 target: this.gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
-                url: "" // TODO
+                url: "./data/skybox/pos-y.jpg"
             },
             {
                 target: this.gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
-                url: "" // TODO
+                url: "./data/skybox/neg-y.jpg"
             },
             {
                 target: this.gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
-                url: "" // TODO
+                url: "./data/skybox/pos-z.jpg"
             },
             {
-                target: this.gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
-                url: "" // TODO
+                target: this.gl.TEXTURE_CUBE_MAP_NEGATIVE_Z,
+                url: "./data/skybox/neg-z.jpg"
             }
         ];
 
@@ -244,8 +244,8 @@ class Scene {
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
 
         // creating frame for the shadows
-        this.shadow.depthFrameBuffer = this.gl.createFrameBuffer();
-        this.gl.bindFrameBuffer(this.gl.FRAMEBUFFER, this.shadow.depthFrameBuffer);
+        this.shadow.depthFrameBuffer = this.gl.createFramebuffer();
+        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.shadow.depthFrameBuffer);
         this.gl.framebufferTexture2D(
             this.gl.FRAMEBUFFER,
             this.gl.DEPTH_ATTACHMENT,
@@ -296,8 +296,8 @@ function draw() {
     let proj = scene.projectionMatrix();
     let view = scene.camera.getViewMatrix();
 
-    function bindFrameBufferNull() {
-        scene.gl.bindFrameBuffer(scene.gl.FRAMEBUFFER, null);
+    function bindFramebufferNull() {
+        scene.gl.bindFramebuffer(scene.gl.FRAMEBUFFER, null);
         scene.gl.viewport(0, 0, scene.gl.canvas.width, scene.gl.canvas.height);
         scene.gl.clearColor(0, 0, 0, 1);
         scene.gl.clear(scene.gl.COLOR_BUFFER_BIT | scene.gl.DEPTH_BUFFER_BIT);
@@ -327,15 +327,15 @@ function draw() {
         };
 
         // draw to the depth texture
-        scene.gl.bindFrameBuffer(scene.gl.FRAMEBUFFER, scene.shadow.depthFrameBuffer);
-        scene.gl.viewport(0, 0, scene.shadow.depth)
+        scene.gl.bindFramebuffer(scene.gl.FRAMEBUFFER, scene.shadow.depthFrameBuffer);
+        scene.gl.viewport(0, 0, scene.shadow.depthTextureSize, scene.shadow.depthTextureSize);
         scene.gl.clear(scene.gl.COLOR_BUFFER_BIT | scene.gl.DEPTH_BUFFER_BIT);
 
         scene.mesh_list.forEach(m => {
             m.render(scene.gl, scene.colorProgramInfo, sharedUniforms);
         });
 
-        bindFrameBufferNull();
+        bindFramebufferNull();
 
         let textureMatrix = m4.identity();
         textureMatrix = m4.translate(textureMatrix, 0.5, 0.5, 0.5);
@@ -362,7 +362,7 @@ function draw() {
 
     } else { // shadows not enabled 
 
-        bindFrameBufferNull();
+        bindFramebufferNull();
 
         sharedUniforms = {
             u_ambientLight: scene.light.ambient,

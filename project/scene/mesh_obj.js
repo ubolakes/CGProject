@@ -67,7 +67,7 @@ class MeshObj {
                 data.color = {value: [1, 1, 1, 1]};
             }
             // creating buffers and associating data
-            const bufferInfo = weglUtils.createBufferInfoFromArrays(gl, data);
+            const bufferInfo = webglUtils.createBufferInfoFromArrays(gl, data);
             return {
                 material: {
                     ...defaultMaterial,
@@ -106,7 +106,7 @@ class MeshObj {
             // to pass attributes pointer to vertex shader
             webglUtils.setBuffersAndAttributes(gl, programInfo, bufferInfo);
             // calls gl.uniform to pass values to shadere
-            weglUtils.setUniforms(programInfo, { world_matrix }, material);
+            webglUtils.setUniforms(programInfo, { world_matrix }, material);
             // calls the gl.drawArrays to draw the scene
             webglUtils.drawBufferInfo(gl, bufferInfo);
         }
