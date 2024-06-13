@@ -364,14 +364,14 @@ function draw() {
 
         bindFramebufferNull();
 
-        sharedUniforms = {
+        const sharedUniforms = {
             u_ambientLight: scene.light.ambient,
             u_lightDirection: m4.normalize(scene.light.direction),
             u_lightColor: scene.light.color,
             u_view: scene.camera.getViewMatrix(),
             u_projection: scene.projectionMatrix(),
             u_viewWorldPosition: scene.camera.getPosition(),
-            u_lightPosition: (scene.light.position)
+            u_lightPosition: scene.light.position
         };
 
         scene.mesh_list.forEach(m => {
@@ -379,7 +379,7 @@ function draw() {
         });
     }
 
-    // skybox render
+    // rendering skybox
     view[12] = 0;
     view[13] = 0;
     view[14] = 0;
