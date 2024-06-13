@@ -50,7 +50,7 @@ class MeshObj {
 
         // moving meshes to initial location
         this.mesh.data.geometries.forEach( geometry => {
-            for (let i = 0; i < geometry.data.position.length; i +=3) {
+            for (let i = 0; i < geometry.data.position.length; i += 3) {
                 geometry.data.position[i] += (y);
                 geometry.data.position[i+1] += (z);
                 geometry.data.position[i+2] += (x);
@@ -64,7 +64,7 @@ class MeshObj {
                     data.color = { numComponents: 3, data: data.color };
                 }
             } else {
-                data.color = {value: [1, 1, 1, 1]};
+                data.color = { value: [1, 1, 1, 1] };
             }
             // creating buffers and associating data
             const bufferInfo = webglUtils.createBufferInfoFromArrays(gl, data);
@@ -73,7 +73,7 @@ class MeshObj {
                     ...defaultMaterial,
                     ...this.mesh.materials[material]
                 },
-                bufferInfo,
+                bufferInfo
             };
         });
     }
