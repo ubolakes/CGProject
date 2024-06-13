@@ -94,10 +94,10 @@ class MeshObj {
         webglUtils.setUniforms(programInfo, uniforms);
 
         // computing world matrix
-        let world_matrix = m4.identity();
+        let u_world = m4.identity();
 
         if(this.rotate === true && uniforms.textureMatrix !== m4.identity()) {
-            world_matrix = m4.yRotate(world_matrix, degToRad(this.angle));
+            u_world = m4.yRotate(u_world, degToRad(this.angle));
             this.angle = this.angle === 360 ? 0 : this.angle + 5;
         }
 
@@ -106,7 +106,7 @@ class MeshObj {
             // to pass attributes pointer to vertex shader
             webglUtils.setBuffersAndAttributes(gl, programInfo, bufferInfo);
             // calls gl.uniform to pass values to shadere
-            webglUtils.setUniforms(programInfo, { world_matrix }, material);
+            webglUtils.setUniforms(programInfo, { u_world }, material);
             // calls the gl.drawArrays to draw the scene
             webglUtils.drawBufferInfo(gl, bufferInfo);
         }
