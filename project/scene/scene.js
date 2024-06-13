@@ -147,23 +147,23 @@ class Scene {
         const faceInfos = [
             {
                 target: this.gl.TEXTURE_CUBE_MAP_POSITIVE_X,
-                url: "./data/skybox/pos-x.jpg"
+                url: "./data/skybox/pos-x.jpg",
             },
             {
                 target: this.gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
-                url: "./data/skybox/neg-x.jpg"
+                url: "./data/skybox/neg-x.jpg",
             },
             {
                 target: this.gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
-                url: "./data/skybox/pos-y.jpg"
+                url: "./data/skybox/pos-y.jpg",
             },
             {
                 target: this.gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
-                url: "./data/skybox/neg-y.jpg"
+                url: "./data/skybox/neg-y.jpg",
             },
             {
                 target: this.gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
-                url: "./data/skybox/pos-z.jpg"
+                url: "./data/skybox/pos-z.jpg",
             },
             {
                 target: this.gl.TEXTURE_CUBE_MAP_NEGATIVE_Z,
@@ -176,8 +176,8 @@ class Scene {
 
             const level = 0;
             const internalFormat = this.gl.RGBA;
-            const width = 1024;
-            const height = 1024;
+            const width = 2048;
+            const height = 2048;
             const format = this.gl.RGBA;
             const type = this.gl.UNSIGNED_BYTE;
             this.gl.texImage2D(
@@ -378,6 +378,23 @@ function draw() {
             m.render(scene.gl, scene.program, sharedUniforms);
         });
     }
+
+    // skybox render
+    view[12] = 0;
+    view[13] = 0;
+    view[14] = 0;
+    
+    scene.gl.depthFunc(scene.gl.LEQUAL);
+    scene.gl.useProgram(scene.skybox.programInfo.program);
+
+    webglUtils.setBuffersAndAttributes(scene.gl, scene.skybox.programInfo, scene.skybox.quadBufferInfo);
+    webglUtils.setUniforms(scene.skybox.programInfo, {
+        u_viewDirectionProjectionInverse: m4.inverse(m4.multiply(proj, view)),
+        u_skybx: scene.skybox.texture,
+        u_lightColor: scene.light.color
+    });
+    webglUtils.drawBufferInfo(scene.gl, scene.skybox.quadBufferInfo);
+    scene.gl.depthFunc(scene.gl.LESS);
 
     requestAnimationFrame(draw);
 
