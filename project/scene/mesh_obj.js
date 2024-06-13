@@ -35,12 +35,12 @@ class MeshObj {
         // generic material
         const defaultMaterial = {
             // default parameters
-            diffuse: [1, 1, 1],
-            diffuseMap: this.mesh.textures.defaultWhite,
-            ambient: [0, 0, 0],
-            specular: [1, 1, 1],
-            shininess: 400,
-            opacity: 1
+            u_diffuse: [1, 1, 1],
+            u_diffuseMap: this.mesh.textures.defaultWhite,
+            u_ambient: [0, 0, 0],
+            u_specular: [1, 1, 1],
+            u_shininess: 400,
+            u_opacity: 1
         };
 
         // moving to initial location
