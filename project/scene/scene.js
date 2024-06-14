@@ -98,23 +98,10 @@ class Scene {
         if (this.keys["d"]) { // right
             this.camera.truck(step);
         }
-        // TODO: understand what the next movements do
-        if (this.keys["q"]) {
+        if (this.keys[" "]) { // up
             this.camera.pedestal(step);
         }
-        if (this.keys["e"]) {
-            this.camera.pedestal(-step);
-        }
-        if (this.keys["h"]) {
-            this.camera.cant(-step);
-        }
-        if (this.keys["k"]) {
-            this.camera.cant(step);
-        }
-        if (this.keys["u"]) {
-            this.camera.pedestal(step);
-        }
-        if (this.keys["j"]) {
+        if (this.keys["Control"]) { // down
             this.camera.pedestal(-step);
         }
         if (this.keys["ArrowUp"]) {
