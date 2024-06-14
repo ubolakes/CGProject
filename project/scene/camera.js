@@ -18,22 +18,12 @@ class Camera {
 
     // rotates camera view horizontally
     pan(step){
-        let rotation = m4.axisRotation(this.up, step);
+        let rotation = m4.axisRotation(this.up, step * 2);
         this.forward = m4.transformPoint(rotation, this.forward);
         this.right = m4.transformPoint(rotation, this.right);
 
         this.forward = m4.normalize(this.forward);
         this.right = m4.normalize(this.right);
-    }
-
-    // tilt camers sideways
-    cant(step){
-        let rotation = m4.axisRotation(this.forward, (step/2));
-        this.right = m4.transformPoint(rotation, this.right);
-        this.up = m4.transformPoint(rotation, this.up);
-
-        this.right = m4.normalize(this.right);
-        this.up = m4.normalize(this.up);
     }
 
     // moves camera left or right
@@ -52,9 +42,9 @@ class Camera {
 
     // moves camera closer or further from the scene
     dolly(dist){
-        this.position[0] += (this.forward[0] * dist);
-        this.position[1] += (this.forward[1] * dist);
-        this.position[2] += (this.forward[2] * dist);
+        this.position[0] += (this.forward[0] * dist * 2);
+        this.position[1] += (this.forward[1] * dist * 2);
+        this.position[2] += (this.forward[2] * dist * 2);
     }
 
     // realigns the camera
@@ -64,6 +54,7 @@ class Camera {
         this.right = m4.normalize(m4.cross(this.forward, this.up));
     }
 
+    /* getters */
     // returns the viewmatrix
     getViewMatrix(){
         const look = m4.addVectors(this.position, this.forward);
