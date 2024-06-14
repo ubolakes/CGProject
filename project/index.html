@@ -57,12 +57,13 @@
 
         // material properties
         uniform sampler2D diffuseMap;
-        uniform vec3 u_diffuse;
-        uniform vec3 u_ambient;
-        uniform vec3 u_emissive;
-        uniform vec3 u_specular;
-        uniform float u_shininess;
-        uniform float u_opacity;
+        uniform sampler2D normalMap;
+        uniform vec3 diffuse;
+        uniform vec3 ambient;
+        uniform vec3 emissive;
+        uniform vec3 specular;
+        uniform float shininess;
+        uniform float opacity;
         // light properties
         uniform vec3 u_lightDirection;
         uniform vec3 u_lightColor;
@@ -78,14 +79,14 @@
             float specularLight = clamp(dot(normal, halfVector), 0.0, 1.0);
 
             vec4 diffuseMapColor = texture2D(diffuseMap, v_texcoord);
-            vec3 effectiveDiffuse = u_diffuse * diffuseMapColor.rgb * u_lightColor.rgb * v_color.rgb;
-            float effectiveOpacity = u_opacity * diffuseMapColor.a * v_color.a;
+            vec3 effectiveDiffuse = diffuse * diffuseMapColor.rgb * u_lightColor.rgb * v_color.rgb;
+            float effectiveOpacity = opacity * diffuseMapColor.a * v_color.a;
 
             gl_FragColor = vec4(
-                u_emissive +
-                u_ambient * u_ambientLight +
+                emissive +
+                ambient * u_ambientLight +
                 effectiveDiffuse * fakeLight +
-                u_specular * pow(specularLight, u_shininess),
+                specular * pow(specularLight, shininess),
                 effectiveOpacity
             );
         }
@@ -164,12 +165,13 @@
         uniform vec3 u_reverseLightDirection;
         // material properties
         uniform sampler2D diffuseMap;
-        uniform vec3 u_diffuse;
-        uniform vec3 u_ambient;
-        uniform vec3 u_emissive;
-        uniform vec3 u_specular;
-        uniform float u_shininess;
-        uniform float u_opacity;
+        uniform sampler2D normalMap;
+        uniform vec3 diffuse;
+        uniform vec3 ambient;
+        uniform vec3 emissive;
+        uniform vec3 specular;
+        uniform float shininess;
+        uniform float opacity;
 
         void main() {
             vec3 normal = normalize(v_normal);
@@ -189,8 +191,8 @@
             float shadowLight = (inRange && projectedDepth <= currentDepth) ? 0.0 : 1.0;
 
             vec4 diffuseMapColor = texture2D(diffuseMap, v_texcoord);
-            vec3 effectiveDiffuse = u_diffuse * diffuseMapColor.rgb * v_color.rgb;
-            float effectiveOpacity = u_opacity * diffuseMapColor.a * v_color.a;
+            vec3 effectiveDiffuse = diffuse * diffuseMapColor.rgb * v_color.rgb;
+            float effectiveOpacity = opacity * diffuseMapColor.a * v_color.a;
 
             vec4 texColor = texture2D(u_texture, v_texcoord) * u_colorMult;
 
