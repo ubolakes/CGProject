@@ -14,7 +14,7 @@
     </head>
 
     <body>
-        <canvas id="canvas" width="600" height="600"></canvas>
+        <canvas id="canvas" width="1000px" height="1000px"></canvas>
     </body>
 
     <!-- base shader program -->
@@ -56,8 +56,7 @@
         varying vec3 v_surfaceToView;
 
         // material properties
-        uniform sampler2D u_diffuseMap;
-        uniform sampler2D normalMap;
+        uniform sampler2D diffuseMap;
         uniform vec3 u_diffuse;
         uniform vec3 u_ambient;
         uniform vec3 u_emissive;
@@ -78,7 +77,7 @@
             float fakeLight = dot(u_lightDirection, normal) * 0.5 + 0.5;
             float specularLight = clamp(dot(normal, halfVector), 0.0, 1.0);
 
-            vec4 diffuseMapColor = texture2D(u_diffuseMap, v_texcoord);
+            vec4 diffuseMapColor = texture2D(diffuseMap, v_texcoord);
             vec3 effectiveDiffuse = u_diffuse * diffuseMapColor.rgb * u_lightColor.rgb * v_color.rgb;
             float effectiveOpacity = u_opacity * diffuseMapColor.a * v_color.a;
 
@@ -164,8 +163,7 @@
         uniform float u_bias;
         uniform vec3 u_reverseLightDirection;
         // material properties
-        uniform sampler2D u_diffuseMap;
-        uniform sampler2D u_normalMap;
+        uniform sampler2D diffuseMap;
         uniform vec3 u_diffuse;
         uniform vec3 u_ambient;
         uniform vec3 u_emissive;
@@ -190,7 +188,7 @@
             float projectedDepth = texture2D(u_projectedTexture, projectedTexcoord.xy).r;
             float shadowLight = (inRange && projectedDepth <= currentDepth) ? 0.0 : 1.0;
 
-            vec4 diffuseMapColor = texture2D(u_diffuseMap, v_texcoord);
+            vec4 diffuseMapColor = texture2D(diffuseMap, v_texcoord);
             vec3 effectiveDiffuse = u_diffuse * diffuseMapColor.rgb * v_color.rgb;
             float effectiveOpacity = u_opacity * diffuseMapColor.a * v_color.a;
 
