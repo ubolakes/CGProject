@@ -83,6 +83,7 @@ class Scene {
     }
 
     // movement with keyboard
+    // on a key click it calls the associated function to move the camera
     key_controller() {
         let step = 0.05;
 
@@ -130,31 +131,32 @@ class Scene {
         this.skybox.quadBufferInfo = webglUtils.createBufferInfoFromArrays(this.gl, arrays2);
         this.skybox.texture = this.gl.createTexture();
         this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.skybox.texture);
-    
+        
+        // loading skybox faces
         const faceInfos = [
             {
                 target: this.gl.TEXTURE_CUBE_MAP_POSITIVE_X,
-                url: "./data/skybox/pos-x.jpg",
+                url: "./data/skybox/posx.jpg"
             },
             {
                 target: this.gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
-                url: "./data/skybox/neg-x.jpg",
+                url: "./data/skybox/negx.jpg"
             },
             {
                 target: this.gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
-                url: "./data/skybox/pos-y.jpg",
+                url: "./data/skybox/posy.jpg"
             },
             {
                 target: this.gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
-                url: "./data/skybox/neg-y.jpg",
+                url: "./data/skybox/negy.jpg"
             },
             {
                 target: this.gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
-                url: "./data/skybox/pos-z.jpg",
+                url: "./data/skybox/posz.jpg"
             },
             {
                 target: this.gl.TEXTURE_CUBE_MAP_NEGATIVE_Z,
-                url: "./data/skybox/neg-z.jpg"
+                url: "./data/skybox/negz.jpg"
             }
         ];
 
@@ -200,7 +202,6 @@ class Scene {
         });
         this.gl.generateMipmap(this.gl.TEXTURE_CUBE_MAP);
         this.gl.texParameteri(this.gl.TEXTURE_CUBE_MAP, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR_MIPMAP_LINEAR);
-        this.skybox.enable = true;
     }
 
 
@@ -247,12 +248,6 @@ class Scene {
         this.shadow.projHeight = 2;
         this.shadow.zFarProj = 20;
         this.shadow.bias = -0.0001;
-        this.shadow.showFrustum = false;
-    }
-
-    // enables/disables skybox
-    toggle_skybox() {
-        this.skybox.enable = !this.skybox.enable;
     }
 
     // enables/disables shadows
