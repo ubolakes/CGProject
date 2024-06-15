@@ -85,9 +85,4 @@ function add_dat_gui(scene) {
     light_direction.add(scene.light.direction, 1).min(-10).max(10).step(0.25);
     light_direction.add(scene.light.direction, 2).min(-10).max(10).step(0.25);
 
-    let light_color =  light_folder.addFolder('Color');
-    light_color.add(scene.light.color, 0).min(0.1).max(1).step(0.05);
-    light_color.add(scene.light.color, 1).min(0.1).max(1).step(0.05);
-    light_color.add(scene.light.color, 2).min(0.1).max(1).step(0.05);
-
 }
