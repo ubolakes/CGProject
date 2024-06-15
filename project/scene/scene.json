@@ -20,6 +20,15 @@
             "mtl_source":"./data/cardboard/cardboard.mtl",
             "position": [-3, 0, 0]
 
+        },
+
+        {
+            "name":"fan_arm",
+            "obj_source": "./data/fan_arm/fan_arm.obj",
+            "mtl_source": "./data/fan_arm/fan_arm.mtl",
+            "position": [0, -3, 0]
         }
+
+
     ]
 }
