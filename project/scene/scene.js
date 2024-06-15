@@ -42,15 +42,15 @@ class Scene {
         this.load_mesh(jsonPath).then(() => {});
 
         // creating a camera for the scene
-        const position = [10, 2, 10];   // TBD
-        const target = [0, 2, 0];       // TBD
+        const position = [6, 0, 8];
+        const target = [0, 0, 0];
         const up = [0, 1, 0];
         this.camera = new Camera(position, target, up);
         this.keys = {};
         
         // setting light position
         this.light = {
-            position:   [10, 5, 2],
+            position:   [6, 2, 3],
             direction:  [1, 1, 1],
             color:      [1.0, 1.0, 1.0], // white
             ambient:    [0.1, 0.1, 0.1]
