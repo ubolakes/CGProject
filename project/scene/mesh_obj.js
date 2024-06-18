@@ -19,6 +19,7 @@ class MeshObj {
 
         if (obj.rotate){
             this.rotate = obj.rotate;
+            this.axis = obj.axis;
             this.angle = 0;
         }
 
@@ -96,10 +97,31 @@ class MeshObj {
         // computing world matrix
         let u_world = m4.identity();
 
-        if(this.rotate === true && uniforms.textureMatrix !== m4.identity()) {
+        // mesh rotation management
+        if (this.rotate === true && uniforms.textureMatrix !== m4.identity()) {
+            // axis rotation management
+            switch (this.axis){
+                case "x": // around x
+                    u_world = m4.xRotate(u_world, degToRad(this.angle));
+                    this.angle = this.angle === 360 ? 0 : this.angle + 2;
+                break;
+                case "y": // around y
+                    u_world = m4.yRotate(u_world, degToRad(this.angle));
+                    this.angle = this.angle === 360 ? 0 : this.angle + 2;
+                break;
+                case "z": // around z
+                    u_world = m4.zRotate(u_world, degToRad(this.angle));
+                    this.angle = this.angle === 360 ? 0 : this.angle + 2;
+                break;
+                default: // do nothing
+                break;
+            }
+        }
+        /*
+        if(this.rotate !== null && uniforms.textureMatrix !== m4.identity()) {
             u_world = m4.xRotate(u_world, degToRad(this.angle));
             this.angle = this.angle === 360 ? 0 : this.angle + 5;
-        }
+        }*/
 
         for (const {bufferInfo, material} of this.mesh.parts) {
             // calls gl.bindbuffer, gl.enableVertexAttribArray, gl.vertexAttribPointer
