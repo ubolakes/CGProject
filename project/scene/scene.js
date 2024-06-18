@@ -105,19 +105,19 @@ class Scene {
         if (this.keys["Control"]) { // down
             this.camera.pedestal(-step);
         }
-        if (this.keys["ArrowUp"]) {
+        if (this.keys["ArrowUp"]) { // tilt up
             this.camera.tilt(step);
         }
-        if (this.keys["ArrowDown"]) {
+        if (this.keys["ArrowDown"]) { // tilt down
             this.camera.tilt(-step);
         }
-        if (this.keys["ArrowLeft"]) {
+        if (this.keys["ArrowLeft"]) { // rotate left
             this.camera.pan(step);
         }
-        if (this.keys["ArrowRight"]) {
+        if (this.keys["ArrowRight"]) { // rotate right
             this.camera.pan(-step);
         }
-        if (this.keys["r"]) {
+        if (this.keys["r"]) { // realign camera on the horiz axis
             this.camera.align();
         }
     }
