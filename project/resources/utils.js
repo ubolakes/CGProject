@@ -65,7 +65,7 @@ function createXYQuadVertices() {
 
 // adds the dat.gui to the scene
 function add_dat_gui(scene) {
-    let gui = new dat.gui.GUI();
+    let gui = new dat.gui.GUI({autoPlace: false});
 
     scene["Toggle shadows"] = function () {
         scene.toggle_shadows();
@@ -85,4 +85,6 @@ function add_dat_gui(scene) {
     light_direction.add(scene.light.direction, 1).min(-10).max(10).step(0.25);
     light_direction.add(scene.light.direction, 2).min(-10).max(10).step(0.25);
 
+    // adding dat.GUI to the HTML
+    document.getElementById("gui").append(gui.domElement);
 }
