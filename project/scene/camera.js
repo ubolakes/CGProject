@@ -81,4 +81,4 @@ class Camera {
         return this.position;
     }
 
-}
+} // Camera class

@@ -6,8 +6,6 @@ Github: @ubolakes
 
 /* this class represents the scene, it creates all that's necessary to get a screen output */
 
-// TODO: add comments
-
 class Scene {
     constructor(canvasId, jsonPath) {
         this.canvas = document.getElementById(canvasId);
@@ -77,9 +75,9 @@ class Scene {
     // function to compute the projection matrix
     projectionMatrix() {
         let fovRadians = degToRad(60);
-        let aspect = this.gl.canvas.clientWidth / this.gl.canvas.clientHeight;
+        let aspect_ratio = this.gl.canvas.clientWidth / this.gl.canvas.clientHeight;
         let zmin = 0.1;
-        return m4.perspective(fovRadians, aspect, zmin, 200);
+        return m4.perspective(fovRadians, aspect_ratio, zmin, 200);
     }
 
     // movement with keyboard
@@ -126,6 +124,7 @@ class Scene {
     // it used a cubemap texture
     async prepareSkybox() {
         this.skybox = [];
+
         this.skybox.programInfo = webglUtils.createProgramInfo(this.gl, ["skybox-vertex-shader", "skybox-fragment-shader"]);
         const arrays2 = createXYQuadVertices.apply(null, Array.prototype.slice.call(arguments, 1));
         this.skybox.quadBufferInfo = webglUtils.createBufferInfoFromArrays(this.gl, arrays2);

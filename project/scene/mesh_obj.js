@@ -134,4 +134,4 @@ class MeshObj {
             webglUtils.drawBufferInfo(gl, bufferInfo);
         }
     }
-}
+} // MeshObj class

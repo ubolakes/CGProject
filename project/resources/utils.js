@@ -33,7 +33,8 @@ function resizeCanvasToDisplaySize(canvas) {
     return needsResize;
 }
 
-// describe
+// creates a square centered in the origin and vertices in:
+// (1, 1), (-1, 1), (-1, -1), (1, -1)
 function createXYQuadVertices() {
     let xOffset = 0;
     let yOffset = 0;
