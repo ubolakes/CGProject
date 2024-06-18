@@ -1,3 +1,12 @@
+/*
+Author: Umberto Laghi
+E-mail: umberto.laghi@studio.unibo.it
+Github: @ubolakes
+*/
+
+/*  this class the camera from which the oberver can see the scene, it 
+    presents to change camera position and orientation */
+
 class Camera {
     constructor(pos, lookAt, up){
         this.position = pos;
