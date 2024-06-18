@@ -242,7 +242,7 @@ class Scene {
             0
         );
         // shadow settings
-        this.shadow.enable = true;
+        this.shadow.enable = false;
         this.shadow.fov = 60;
         this.shadow.projWidth = 2;
         this.shadow.projHeight = 2;
