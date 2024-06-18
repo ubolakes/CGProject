@@ -31,10 +31,20 @@
 
         {
             "name": "fan",
-            "obj_source":"./data/fan/fan.obj",
+            "obj_source": "./data/fan/fan.obj",
             "mtl_source": "./data/fan/fan.mtl",
             "position": [0, -2.8, 0],
-            "rotate": true
+            "rotate": true,
+            "axis": "x"
+        },
+
+        {
+            "name": "glass_cube",
+            "obj_source": "./data/cube/cube.obj",
+            "mtl_source": "./data/cube/cube.mtl",
+            "position": [0, 0, -1],
+            "rotate": true,
+            "axis": "y"
         }
     ]
 }
