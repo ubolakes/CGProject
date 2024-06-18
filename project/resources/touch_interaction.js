@@ -6,7 +6,6 @@ Github: @ubolakes
 
 /* this file contains the functions used to manage touch interaction on canvas */
 
-// TODO: add comments to explain what's going on
 // defining variables
 const max_zoom = 100;
 const min_zoom = 1;
@@ -15,11 +14,8 @@ var old_x, oldy;
 var zoom_enabled = false;
 var dX, dY;
 
+// linking event listeners to handlers
 function add_touch_support(scene) {
-    //scene.canvas.addEventListener('touchstart', mouseDown, false);
-    //scene.canvas.addEventListener('touchmove', mouseMove, false);
-    //scene.canvas.addEventListener('touchend', mouseUp, false);
-    //scene.canvas.addEventListener('touchend', mouseOut, false);
     scene.canvas.ontouchstart = mouseDown;
     scene.canvas.ontouchend = mouseUp;
     scene.canvas.ontouchmove = mouseMove;
@@ -32,6 +28,7 @@ function add_touch_support(scene) {
     scene.canvas.onwheel = onWheel;
 }
 
+// pressing mouse button
 var mouseDown = function(e){
     drag = true;
     old_x = e.pageX, old_y = e.pageY;
@@ -39,11 +36,13 @@ var mouseDown = function(e){
     return false;
 };
 
+// releasing mouse button
 var mouseUp = function(e) {
     // disabling drag
     drag = false;
 };
 
+// moving cursor out
 var mouseOut = function(e) {
     // disabling drag
     drag = false
@@ -52,6 +51,7 @@ var mouseOut = function(e) {
     //console.log("Zoom enabled: "+ zoom_enabled);
 }
 
+// moving cursor
 var mouseMove = function(e) {
     if (!drag)
         return false;
@@ -66,18 +66,18 @@ var mouseMove = function(e) {
     e.preventDefault();
 };
 
+// mouse on canvas
 var mouseOver = function(e) {
     // enabling zoom in and out
     zoom_enabled = true;
-    //console.log("Zoom enabled: "+ zoom_enabled);
 }
 
+// using wheel to zoom 
 var onWheel = function(e) {
     if (!zoom_enabled)
         return false;
     // getting closer or further
     scene.camera.dolly(-e.deltaY/100);
-
     e.preventDefault();
 };
 
