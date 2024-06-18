@@ -79,7 +79,7 @@ class Scene {
         let fovRadians = degToRad(60);
         let aspect = this.gl.canvas.clientWidth / this.gl.canvas.clientHeight;
         let zmin = 0.1;
-        return m4. perspective(fovRadians, aspect, zmin, 200);
+        return m4.perspective(fovRadians, aspect, zmin, 200);
     }
 
     // movement with keyboard
