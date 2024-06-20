@@ -20,7 +20,6 @@ var dX0, dY0;
 var dX1, dY1;
 var old_dist, new_dist;
 
-var touches;
 // linking event listeners to handlers
 function add_touch_interaction(scene) {
     scene.canvas.ontouchstart = touchStart;
