@@ -49,7 +49,7 @@ var touchMove = function(e) {
     e.preventDefault();
     // selecting the case based on the number of touch points
     if (e.touches.length > 1){ // two touch points
-        pinch(e);
+        pinch_handler(e);
     } else { // just one touch point
     // getting touch object
     const touch = e.touches[0];
@@ -78,7 +78,10 @@ var touchCancel = function(e) {
 }
 
 // pinch to zoom
-function pinch(e) {
+/*  the idea is pretty simple: it considers two points 
+    and computes the distance among them, if it 
+    increases it zooms in, otherwise it zooms out */
+function pinch_handler(e) {
     e.preventDefault();
     let step = 0.05;
     // getting touch objects
