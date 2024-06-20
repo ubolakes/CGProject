@@ -44,15 +44,12 @@ var touchMove = function(e) {
     // updating old params
     old_x = touch.clientX, old_y = touch.clientY;
     e.preventDefault();
-    console.log("touch move");
 }
 
 var touchEnd = function(e) {
     drag = false;
-    console.log("touch end");
 }
 
 var touchCancel = function(e) {
     drag = false;
-    console.log("touch cancel");
 }
