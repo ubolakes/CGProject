@@ -18,7 +18,6 @@ var old_x0, old_y0;
 var old_x1, old_y1;
 var dX0, dY0;
 var dX1, dY1;
-var m;
 var old_dist, new_dist;
 
 var touches;
