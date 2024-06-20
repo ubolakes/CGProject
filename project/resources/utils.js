@@ -90,3 +90,8 @@ function add_dat_gui(scene) {
     // adding dat.GUI to the HTML
     document.getElementById("gui").append(gui.domElement);
 }
+
+// computes 2D distance
+function get_2D_distance(x1, y1, x2, y2) {
+    return Math.sqrt((x1 - x2)**2 + (y1 - y2)**2);
+}
