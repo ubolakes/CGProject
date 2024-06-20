@@ -35,28 +35,22 @@ var touchStart = function(e) {
     // counting how many points
     if (e.touches.length > 1){
         // setting old values
-        old_x0 = e.touches[0].clientX;
-        old_y0 = e.touches[0].clientY;
-        old_x1 = e.touches[1].clientX;
-        old_y1 = e.touches[1].clientY;
+        old_x0 = e.touches[0].clientX, old_y0 = e.touches[0].clientY;
+        old_x1 = e.touches[1].clientX, old_y1 = e.touches[1].clientY;
         // computing old distance
         old_dist = get_2D_distance(old_x0, old_y0, old_x1, old_y1);
-        //console.log(old_dist);
     } else { // just one touch point
         const touch = e.touches[0]; // getting the touch object
         old_x = touch.clientX, old_y = touch.clientY;
-        return false;
     }
 }
 
 var touchMove = function(e) {
     e.preventDefault();
-    // two touch points
-    if (e.touches.length > 1){
+    // selecting the case based on the number of touch points
+    if (e.touches.length > 1){ // two touch points
         pinch(e);
-        //old_dist = new_dist;
-    } else {
-    // just one touch point
+    } else { // just one touch point
     // getting touch object
     const touch = e.touches[0];
     // computing deltas on both aces
@@ -71,11 +65,16 @@ var touchMove = function(e) {
 }
 
 var touchEnd = function(e) {
-    //console.log("touch end");
+    /*  calling touchstart to recount the number of touch points.
+        This way, when a finger is removed, it doesn't immediately 
+        update the dX and dY based on e.touches[0] and so it 
+        removes the annoying shot to new parameters */
+    touchStart(e);
 }
 
 var touchCancel = function(e) {
-    //console.log("touch cancel");
+    // same reason as touchEnd
+    touchStart(e);
 }
 
 // pinch to zoom
