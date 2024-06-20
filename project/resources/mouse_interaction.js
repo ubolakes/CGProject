@@ -51,13 +51,13 @@ var mouseOut = function(e) {
 var mouseMove = function(e) {
     if (!drag)
         return false;
-    // computing deltas on both axes
+    // computing deltas on both aces
     dX = (e.pageX - old_x) * 2 * Math.PI / canvas.width;
     dY = (e.pageY - old_y) * 2 * Math.PI / canvas.height;
     // updating camera parameters
     scene.camera.pan(-dX * 0.2);
     scene.camera.tilt(-dY * 0.2);
-    // updating old params
+    // updating old parameters
     old_x = e.pageX, old_y = e.pageY;
     e.preventDefault();
 };
