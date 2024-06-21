@@ -292,9 +292,10 @@
         <p><img src="controlli.png"  width=50% height=50% style="display: block; margin-left: auto; margin-right: auto;"></p>
         <p>
             I tasti per controllare il movimento la direzione di vista sono visibili 
-            espandendo il menù laterale, mentre per il touch è stata utilizzata la 
-            libreria <a href="https://github.com/hammerjs/hammer.js">hammer.js</a>, 
-            che si occupa di interpretare le interazioni tramite dispositivo touch
+            espandendo il menù laterale. <br>
+            Per l'interazione con dispositivi dotati di schermo touch sono stati 
+            utilizzati gli eventi della famiglia <code>touch</code>, disponibili 
+            in HTML5.
         </p>
         <p><a href="#indice">Torna all’indice</a></p>
         <hr/>
@@ -315,9 +316,9 @@
                 <li>per ogni mesh indicata nel file json viene istanziato un 
                     <strong>mesh_obj</strong> che viene salvato in una lista interna
                     all'oggetto Scene</li>
-                <li>inizializzazione della <strong>camera</strong>, <strong>keys</strong>
-                (struttura per la gestione dei tasti della tastiera), <strong>hammer.js</strong> e
-                <strong>light</strong> (oggetto luce di scena)</li>
+                <li>inizializzazione della <strong>camera</strong>, binding dei metodi di 
+                    input agli eventi: <strong>keys</strong> (tastiera), <strong>touch</strong>, 
+                    <strong>mouse</strong> e <strong>light</strong> (oggetto luce di scena)</li>
             </ul>
         </p>
         <p>
