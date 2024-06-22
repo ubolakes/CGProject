@@ -311,14 +311,14 @@
             dello shadow mapping.
         </p>
         <p>
-            // riguardare bene
-            Per disegnare le ombre si parte dal punto di vista della luce, che 
-            applica l'algoritmo di Shadow Buffer, che funziona in maniera 
-            analoga allo Z-Buffer, considerando la distanza delle mesh da dal 
-            punto luce.<br>
-            Il risultato di questa operazione è la Shadow Map, che viene 
-            considerata insieme alla Depth Map ottenuta dal punto di vista 
-            dell'osservatore per determinare se un punto è in ombra oppure no. 
+            Per disegnare le ombre si disegna la scena dal punto di vista 
+            della luce, che applica l'algoritmo dello Shadow Buffer, il 
+            cui funzionamento è analogo a quello del Depth Buffer. <br>
+            Il risultato di questo algoritmo è la Shadow Map, che descrive 
+            quali punti delle mesh sono illuminate e quali no. Questa 
+            mappa viene considerata insieme alla Depth Map generata dal 
+            punto di vista dell'osservatore e si determina quali punti 
+            sono da disegnare in ombra e quali no.
         </p>
 
         <p class="aligncenter">
