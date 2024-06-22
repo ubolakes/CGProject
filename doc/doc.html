@@ -30,7 +30,7 @@
             <li><a href="#scene.js">Scene</a></li>
             <li><a href="#camera.js">Camera</a></li>
             <li><a href="#mesh_obj.js">MeshObj</a></li>
-            <li><a href="#riferimenti">Riferimenti utilizzati</a></li>
+            <li><a href="#riferimenti">Riferimenti</a></li>
         </ul>
         <hr />
         
@@ -44,29 +44,66 @@
             JavaScript e il linguaggio di shading OpenGL ES SL.
         </p>
 
-        <p> L'applicazione risultante consiste di una scena 3D 
-            interagibile contenente più mesh 3D texturate.<br> 
-            L'architettura del progetto consiste di più classi:
+        <p> 
+            L'applicazione risultante consiste di una scena 3D 
+            interagibile contenente più mesh 3D texturate.<br>
+        </p>
+        <p>    
+            L'architettura del progetto consiste di due package:
             <ul>
-                <li><strong>scene.js:</strong>
-                    è la classe più in alto nella gerarchia, si occupa 
-                    di gestire tutte le altre.
+                <li><strong>scene</strong>, che contiene:
+                    <ul>
+                        <li><strong>scene.js:</strong>
+                            è la classe più in alto nella gerarchia, rappresenta 
+                            la scena e si occupa di gestire tutte le altre.
+                        </li>
+                        <li><strong>camera.js:</strong>
+                            è la classe che descrive la camera e ne gestisce i 
+                            movimenti nell'ambiente 3D.
+                        </li>
+                        <li><strong>mesh_obj:</strong>
+                            è la classe che rappresenta una mesh da disegnare.
+                        </li>
+                    </ul>
                 </li>
-                <li><strong>camera.js:</strong>
-                    è la classe che descrive la camera e ne gestisce i 
-                    movimenti nell'ambiente 3D.
-                </li>
-                <li><strong>mesh_obj:</strong>
-                    è la classe che rappresenta una mesh da disegnare.
+                <li><strong>resources</strong>, che contiene le varie librerie 
+                    e funzioni di supporto utilizzate, tra cui:
+                    <ul>
+                        <li><strong>dat.gui.js</strong>: 
+                            utilizzata per gestire le impostazioni della scena
+                        </li>
+                        <li><strong>m4.js</strong>: 
+                            fornisce metodi utili per il calcolo matriciale
+                        </li>
+                        <li><strong>load_mesh.js</strong>: 
+                            contiene la funzione per leggere le mesh in formato 
+                            Wavefront OBJ e renderle utilizzabili da WebGL
+                        </li>
+                        <li><strong>webgl-utils.js</strong>:
+                            contiene funzioni wrapper per i metodi di WebGL
+                        </li>
+                        <li><strong>mouse_interaction.js</strong>:
+                            raccolta di funzioni per gestire gli eventi 
+                            prodotti da un mouse
+                        </li>
+                        <li><strong>touch_interaction.js</strong>:
+                            raccolta di funzioni per gestire gli eventi 
+                            generati da un dispositivo con schermo touch    
+                        </li>
+                        <li><strong>utils.js</strong>: 
+                            contiene funzioni di supporto
+                        </li>
+                    </ul>
                 </li>
                 <li><strong>main.js:</strong>
-                    entry point del programma.
-                </li>
-                <li><strong>utils.js:</strong>
-                    file che raccoglie metodi di supporto usati dalle 
-                    altri classi.
+                    entry point del programma, invoca i metodi necessari 
+                    a renderizzare la scena e renderla interagibile con 
+                    l'utente.
                 </li>
             </ul>
+        </p>
+        <p class="aligncenter">
+            <img src="resources/images/architecture.png" title="Architettura del progetto", height="600">
         </p>
 
         <h2 id="interfaccia">Interfaccia</h2>
