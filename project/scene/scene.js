@@ -268,8 +268,9 @@ function draw() {
     scene.gl.viewport(0, 0, scene.gl.canvas.width, scene.gl.canvas.height);
     scene.keyController();
 
-    scene.gl.enable(scene.gl.CULL_FACE);
-    scene.gl.enable(scene.gl.DEPTH_TEST);
+    scene.gl.enable(scene.gl.CULL_FACE); // discarding unseen triangles
+    scene.gl.enable(scene.gl.DEPTH_TEST); // using Z-buffer technique
+    // enabling transparency
     scene.gl.enable(scene.gl.BLEND);
     scene.gl.blendFunc(scene.gl.SRC_ALPHA, scene.gl.ONE_MINUS_SRC_ALPHA);
 
