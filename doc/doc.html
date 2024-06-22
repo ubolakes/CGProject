@@ -5,7 +5,12 @@
         <meta name="generator" content="pandoc" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
         <meta name="author" content="Umberto Laghi" />
+        
         <title>Documentation</title>
+        
+        <!-- CSS -->
+        <link rel="stylesheet" type="text/css" href="style/style.css">
+        
         <style>
             html {
             line-height: 1.5;
@@ -13,6 +18,9 @@
             font-size: 20px;
             color: #1a1a1a;
             background-color: #fdfdfd;
+            }
+            .aligncenter {
+                text-align: center;
             }
             body {
             margin: 0 auto;
@@ -241,10 +249,7 @@
             interattiva utilizzando la libreria grafica WebGL, 
             JavaScript e il linguaggio di shading OpenGL ES SL.
         </p>
-        <figure>
-        <img src="scena1.png" alt="Rendering di una scena" />
-        <figcaption aria-hidden="true">Rendering di una scena</figcaption>
-        </figure>
+
         <p> L'applicazione risultante consiste di una scena 3D 
             interagibile contenente più mesh 3D texturate.<br> 
             L'architettura del progetto consiste di più classi:
@@ -271,7 +276,7 @@
         </p>
 
         <h2 id="interfaccia">Interfaccia</h2>
-        <p><img src="interfaccia.png" title="Interfaccia dell&#39;applicazione"/>
+        <p><img src="./resources/interface.png" title="Interfaccia dell&#39;applicazione"/>
             L'interfaccia dell'applicazione è molto semplice: 
             da una parte c'è il canvas per disegnare la scena 
             e dall'altra una colonna contenente i comandi per 
@@ -285,16 +290,25 @@
         <p>
             Il movimento all'interno dell'ambiente 3D può essere gestito in due modi:
             <ul>
-                <li>tramite <strong>tastiera</strong>, i cui tasti sono indicati a destra</li>
+                <li>tramite <strong>tastiera</strong>, i cui tasti sono indicati a destra
+                    <p class="aligncenter">
+                        <img src="./resources/kb_movement.png"  title="Comandi da tastiera">
+                    </p>
+                </li>
+                <li>tramite <strong>mouse</strong>, in maniera molto intuitiva</strong></li>
+                // mettere gif del movimento con il mouse
                 <li>tramite <strong>touch</strong>, che sfrutta le gesture a cui siamo abituati sugli smartphone</li>
+                // metter gif di movimento con comandi touch
             </ul>
         </p>
-        <p><img src="controlli.png"  width=50% height=50% style="display: block; margin-left: auto; margin-right: auto;"></p>
+       
         <p>
             I tasti per controllare il movimento la direzione di vista sono visibili 
             espandendo il menù laterale. <br>
+            L'interazione con il dispositivi dotati di mouse è stata gestita tramite 
+            gli eventi della famiglia <code>mouseevent</code>.
             Per l'interazione con dispositivi dotati di schermo touch sono stati 
-            utilizzati gli eventi della famiglia <code>touch</code>, disponibili 
+            utilizzati gli eventi della famiglia <code>touchevent</code>, disponibili 
             in HTML5.
         </p>
         <p><a href="#indice">Torna all’indice</a></p>
@@ -327,7 +341,7 @@
             modificando i file json.
         </p>
         <p>
-            Di seguito è riportata la struttura tipo di una entry nel file json:
+            Di seguito è riportata la struttura del file json:
         </p>
         <div class="sourceCode" id="cb1"><pre
         class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>  <span class="er">&quot;meshes&quot;:</span><span class="ot">[</span></span>
@@ -342,8 +356,7 @@
             Ogni entry ha le seguenti proprietà:
             <ul>
                 <li><strong>name:</strong>
-                    nome della mesh, usato per il debug
-                </li>
+                    nome della mesh, usato per il debug</li>
                 <li><strong>obj_source:</strong> 
                     percorso del file .obj</li>
                 <li><strong>mtl_source:</strong> 
@@ -434,10 +447,9 @@
             questo verrà disegnato con una trasparenza.
         </p>
 
-        <figure>
-            <img src="trasparenza.png" title="Oggetto con trasparenza" alt="Esempio di trasparenza"/>
-            <figcaption aria-hidden="true">Esempio di trasparenza</figcaption>
-        </figure>
+        <p class="aligncenter">
+            <img src="./resources/transparency.png" title="Oggetto con trasparenza"/>
+        </p>
 
         <h3 id="rendering-base">Rendering base</h3>
         <p>
@@ -450,10 +462,9 @@
             </ul>
         </p>
 
-        <figure>
-            <img src="base.png" title="Scena disegnata con rendering base" alt="Rendering base"/>
-            <figcaption aria-hidden="true">Rendering base</figcaption>
-        </figure>
+        <p class="aligncenter">
+            <img src="./resources/scene.png" title="Scena disegnata con rendering base"/>
+        </p>
 
         <h3 id="rendering-con-ombre">Rendering con ombre</h3>
         <p>
@@ -471,10 +482,11 @@
             considerata insieme alla Depth Map ottenuta dal punto di vista 
             dell'osservatore per determinare se un punto è in ombra oppure no. 
         </p>
-        <figure>
-            <img src="ombre.png" title="Stessa scena disegnata con le ombre" alt="Rendering con ombre" />
-            <figcaption aria-hidden="true">Rendering con ombre</figcaption>
-        </figure>
+
+        <p class="aligncenter">
+            <img src="./resources/shadow_rendering.png" title="Scena disegnata con le ombre" />
+        </p>
+        
         <p><a href="#indice">Torna all’indice</a></p>
         <hr />
 
@@ -495,6 +507,13 @@
         </p>
 
         <h2 id="metodi-1">Metodi</h2>
+        <p>
+            I movimenti della camera sono presi da quelli utilizzati nella 
+            produzione video.
+        </p>
+        <p class="aligncenter">
+            <img src="./resources/camera_movements.jpg" title="Movimenti di camera" height="500" >
+        </p>
         <h3 id="tiltstep">tilt( step )</h3>
         <p>
             Ruota la visuale in alto o in basso, si ottiene ruotando 
