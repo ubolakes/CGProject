@@ -19,6 +19,7 @@ var old_x1, old_y1;
 var dX0, dY0;
 var dX1, dY1;
 var old_dist, new_dist;
+var multitouch = false;
 
 // linking event listeners to handlers
 function addTouchInteraction(scene) {
@@ -32,6 +33,7 @@ var touchStart = function(e) {
     e.preventDefault();
     // counting how many points
     if (e.touches.length > 1){
+        multitouch = true;
         // setting old values
         old_x0 = e.touches[0].clientX, old_y0 = e.touches[0].clientY;
         old_x1 = e.touches[1].clientX, old_y1 = e.touches[1].clientY;
@@ -66,13 +68,21 @@ var touchEnd = function(e) {
     /*  calling touchstart to recount the number of touch points.
         This way, when a finger is removed, it doesn't immediately 
         update the dX and dY based on e.touches[0] and so it 
-        removes the annoying shot to new parameters */
-    touchStart(e);
+        removes the annoying shot to new parameters.
+        It's only called when we had more than one touch point, 
+        otherwise it produces an error. */
+    if (multitouch) {
+        multitouch = !multitouch;
+        touchStart(e);
+    }
 }
 
 var touchCancel = function(e) {
     // same reason as touchEnd
-    touchStart(e);
+    if (multitouch) {
+        multitouch = !multitouch;
+        touchStart(e);
+    }
 }
 
 // pinch to zoom
