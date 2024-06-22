@@ -167,20 +167,20 @@
 
         <h2 id="metodi">Metodi</h2>
 
-        <h3 id="async-load_mesh_jsonjson_path">async load_mesh_json( json_path )</h3>
+        <h3 id="async-loadMesh_jsonjson_path">async loadMesh_json( json_path )</h3>
         <p>
             Si occupa di leggere il file json contenente le mesh da caricare e 
             per ciascuno istanzia un oggetto mesh_obj che viene salvato in 
             <code>scene.mesh_list</code>.
         </p>
 
-        <h3 id="projectionmatrix">projectionMatrix()</h3>
+        <h3 id="getProjectionMatrix">getProjectionMatrix()</h3>
         <p>
             Si occupa di calcolare la projection matrix utilizzando la funzione
             <code>perspective(...)</code> della libreria m4.js.
         </p>
 
-        <h3 id="key_controller">key_controller()</h3>
+        <h3 id="keyController">keyController()</h3>
         <p>
             Si occupa di intercettare gli input da tastiera e invoca le funzioni 
             che modificano la posizione e la direzione della camera. <br>
@@ -207,7 +207,7 @@
             </ul>
         </p>
 
-        <h3 id="toggle_shadows">toggle_shadows()</h3>
+        <h3 id="toggleShadows">toggleShadows()</h3>
         <p>
             Si occupa gestire lo switch dallo shader program 
             con ombre a quello senza e viceversa.
@@ -221,7 +221,7 @@
             <ul>
                 <li>ridimensionare canvas e viewport in base alla grandezza della
                 finestra</li>
-                <li>chiamare il metodo <code>key_controller()</code> per la 
+                <li>chiamare il metodo <code>keyController()</code> per la 
                     gestione degli input da tastiera</li>
                 <li>calcolare la projection e la view matrix</li>
                 <li>la matrice di vista viene ottenuta da 
@@ -384,7 +384,7 @@
 
         <h2 id="metodi-2">Metodi</h2>
 
-        <h3 id="prepare_meshgl">prepare_mesh( gl )</h3>
+        <h3 id="prepareMeshgl">prepareMesh( gl )</h3>
         <p>
             Si occupa di creare i buffer per passare gli attribute al 
             vertex shader, per fare ciò sfrutta la funzione 

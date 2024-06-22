@@ -21,7 +21,7 @@ var dX1, dY1;
 var old_dist, new_dist;
 
 // linking event listeners to handlers
-function add_touch_interaction(scene) {
+function addTouchInteraction(scene) {
     scene.canvas.ontouchstart = touchStart;
     scene.canvas.ontouchend = touchEnd;
     scene.canvas.ontouchmove = touchMove;
@@ -36,7 +36,7 @@ var touchStart = function(e) {
         old_x0 = e.touches[0].clientX, old_y0 = e.touches[0].clientY;
         old_x1 = e.touches[1].clientX, old_y1 = e.touches[1].clientY;
         // computing old distance
-        old_dist = get_2D_distance(old_x0, old_y0, old_x1, old_y1);
+        old_dist = get2DDistance(old_x0, old_y0, old_x1, old_y1);
     } else { // just one touch point
         const touch = e.touches[0]; // getting the touch object
         old_x = touch.clientX, old_y = touch.clientY;
@@ -47,7 +47,7 @@ var touchMove = function(e) {
     e.preventDefault();
     // selecting the case based on the number of touch points
     if (e.touches.length > 1){ // two touch points
-        pinch_handler(e);
+        pinchHandler(e);
     } else { // just one touch point
     // getting touch object
     const touch = e.touches[0];
@@ -79,14 +79,14 @@ var touchCancel = function(e) {
 /*  the idea is pretty simple: it considers two points 
     and computes the distance among them, if it 
     increases it zooms in, otherwise it zooms out */
-function pinch_handler(e) {
+function pinchHandler(e) {
     e.preventDefault();
     let step = 0.05;
     // getting touch objects
     const touch0 = e.touches[0];
     const touch1 = e.touches[1];
     // computing the distance between points
-    new_dist = get_2D_distance(touch0.clientX, touch0.clientY, touch1.clientX, touch1.clientY);
+    new_dist = get2DDistance(touch0.clientX, touch0.clientY, touch1.clientX, touch1.clientY);
     // computing the difference
     diff = old_dist - new_dist;
     // getting closer or further depending on diff sign

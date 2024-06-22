@@ -66,11 +66,11 @@ function createXYQuadVertices() {
 }
 
 // adds the dat.gui to the scene
-function add_dat_gui(scene) {
+function addDatGui(scene) {
     let gui = new dat.gui.GUI({autoPlace: false});
 
     scene["Toggle shadows"] = function () {
-        scene.toggle_shadows();
+        scene.toggleShadows();
     };
     gui.add(scene, "Toggle shadows");
 
@@ -92,6 +92,6 @@ function add_dat_gui(scene) {
 }
 
 // computes 2D distance
-function get_2D_distance(x1, y1, x2, y2) {
+function get2DDistance(x1, y1, x2, y2) {
     return Math.sqrt((x1 - x2)**2 + (y1 - y2)**2);
 }

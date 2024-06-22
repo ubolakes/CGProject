@@ -27,13 +27,13 @@ class MeshObj {
         this.ready = false;
 
         LoadMesh(gl, this.mesh).then(() => {
-            this.prepare_mesh(gl).then(() => {});
+            this.prepareMesh(gl).then(() => {});
             this.ready = true;
         });
     }
 
     // this function loads mesh data and puts them in buffers to be loaded into vertex shader 
-    async prepare_mesh(gl){
+    async prepareMesh(gl){
         // generic material
         const defaultMaterial = {
             // default parameters

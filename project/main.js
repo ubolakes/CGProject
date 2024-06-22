@@ -15,10 +15,10 @@ function main() {
     window.addEventListener('keyup', (e) => {scene.keys[e.key] = false;});
     
     // adding event listeners for touch interaction
-    add_touch_interaction(scene);
-    add_mouse_interaction(scene);
+    addTouchInteraction(scene);
+    addMouseInteraction(scene);
     // adding dat.gui
-    add_dat_gui(scene);
+    addDatGui(scene);
 
     // drawing the scene
     draw(scene);

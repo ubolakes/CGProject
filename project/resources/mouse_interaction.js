@@ -15,7 +15,7 @@ var zoom_enabled = false;
 var dX, dY;
 
 // linking event listeners to handlers
-function add_mouse_interaction(scene) {
+function addMouseInteraction(scene) {
     scene.canvas.onmousedown = mouseDown;
     scene.canvas.onmouseup = mouseUp;
     scene.canvas.mouseout = mouseOut;

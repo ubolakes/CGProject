@@ -37,7 +37,7 @@ class Scene {
 
         // storing all meshes of the scene in array
         this.mesh_list = [];
-        this.load_mesh(jsonPath).then(() => {});
+        this.loadMesh(jsonPath).then(() => {});
 
         // creating a camera for the scene
         const position = [6, 0, 8];
@@ -57,7 +57,7 @@ class Scene {
 
     // async function to load a list of meshes from json
     // for each mesh it creates a MeshObj object
-    async load_mesh(jsonPath) {
+    async loadMesh(jsonPath) {
         // waiting for the JSON to load
         const response = await fetch(jsonPath);
         const json = await response.json();
@@ -73,7 +73,7 @@ class Scene {
     }
 
     // function to compute the projection matrix
-    projectionMatrix() {
+    getProjectionMatrix() {
         let fovRadians = degToRad(60);
         let aspect_ratio = this.gl.canvas.clientWidth / this.gl.canvas.clientHeight;
         let zmin = 0.1;
@@ -82,7 +82,7 @@ class Scene {
 
     // movement with keyboard
     // on a key click it calls the associated function to move the camera
-    key_controller() {
+    keyController() {
         let step = 0.05;
 
         if (this.keys["w"]) { // forward
@@ -249,14 +249,14 @@ class Scene {
     }
 
     // enables/disables shadows
-    toggle_shadows() {
+    toggleShadows() {
         this.shadow.enable = !this.shadow.enable;
     }
 
     // reloads the scene
-    async reload_scene() {
+    async reloadScene() {
         this.mesh_list = [];
-        await this.load_mesh(this.path);
+        await this.loadMesh(this.path);
     }
 
 } // Scene class
@@ -266,14 +266,14 @@ function draw() {
     // resizing canvas to window size
     resizeCanvasToDisplaySize(scene.gl.canvas);
     scene.gl.viewport(0, 0, scene.gl.canvas.width, scene.gl.canvas.height);
-    scene.key_controller();
+    scene.keyController();
 
     scene.gl.enable(scene.gl.CULL_FACE);
     scene.gl.enable(scene.gl.DEPTH_TEST);
     scene.gl.enable(scene.gl.BLEND);
     scene.gl.blendFunc(scene.gl.SRC_ALPHA, scene.gl.ONE_MINUS_SRC_ALPHA);
 
-    let proj = scene.projectionMatrix();
+    let proj = scene.getProjectionMatrix();
     let view = scene.camera.getViewMatrix();
 
     function bindFramebufferNull() {
@@ -290,7 +290,7 @@ function draw() {
             [0, 1, 0]
         );
 
-        const lightProjectionMatrix = m4.perspective(
+        const lightgetProjectionMatrix = m4.perspective(
             degToRad(scene.shadow.fov),
             scene.shadow.projWidth / scene.shadow.projHeight,
             0.5,
@@ -299,7 +299,7 @@ function draw() {
 
         let sharedUniforms = {
             u_view: m4.inverse(lightWorldMatrix),
-            u_projection: lightProjectionMatrix,
+            u_projection: lightgetProjectionMatrix,
             u_bias: scene.shadow.bias,
             u_textureMatrix: m4.identity(),
             u_projectedTexture: scene.shadow.depthTexture, 
@@ -320,7 +320,7 @@ function draw() {
         let textureMatrix = m4.identity();
         textureMatrix = m4.translate(textureMatrix, 0.5, 0.5, 0.5);
         textureMatrix = m4.scale(textureMatrix, 0.5, 0.5, 0.5);
-        textureMatrix = m4.multiply(textureMatrix, lightProjectionMatrix);
+        textureMatrix = m4.multiply(textureMatrix, lightgetProjectionMatrix);
         textureMatrix = m4.multiply(
             textureMatrix,
             m4.inverse(lightWorldMatrix)
@@ -349,7 +349,7 @@ function draw() {
             u_lightDirection: m4.normalize(scene.light.direction),
             u_lightColor: scene.light.color,
             u_view: scene.camera.getViewMatrix(),
-            u_projection: scene.projectionMatrix(),
+            u_projection: scene.getProjectionMatrix(),
             u_viewWorldPosition: scene.camera.getPosition(),
             u_lightPosition: scene.light.position
         };
