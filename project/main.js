@@ -3,7 +3,7 @@ Author: Umberto Laghi
 E-mail: umberto.laghi@studio.unibo.it
 Github: @ubolakes
 */
-
+ // test commit
 /* this class is the main function to call the others */
 
 function main() {
