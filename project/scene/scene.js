@@ -203,7 +203,6 @@ class Scene {
         this.gl.texParameteri(this.gl.TEXTURE_CUBE_MAP, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR_MIPMAP_LINEAR);
     }
 
-
     // async function to load shadows
     async prepareShadows() {
         this.shadow = [];
