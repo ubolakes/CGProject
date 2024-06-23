@@ -104,11 +104,11 @@ class MeshObj {
             switch (this.axis){
                 case "x": // around x
                     u_world = m4.xRotate(u_world, degToRad(this.angle));
-                    this.angle = this.angle === 360 ? 0 : this.angle + 2;
+                    this.angle = this.angle === 360 ? 0 : this.angle + 10;
                 break;
                 case "y": // around y
                     u_world = m4.yRotate(u_world, degToRad(this.angle));
-                    this.angle = this.angle === 360 ? 0 : this.angle + 2;
+                    this.angle = this.angle === 360 ? 0 : this.angle + 1.5;
                 break;
                 case "z": // around z
                     u_world = m4.zRotate(u_world, degToRad(this.angle));
