@@ -10,7 +10,7 @@ Github: @ubolakes
 // single touch point
 const max_zoom = 100;
 const min_zoom = 1;
-var old_x, oldy;
+var old_x, old_y;
 var zoom_enabled = false;
 var dX, dY;
 // two touch points
