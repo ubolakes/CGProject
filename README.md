@@ -1,3 +1,7 @@
+[comment]: <> (Author: Umberto Laghi)
+[comment]: <> (E-mail: umberto.laghi@studio.unibo.it)
+[comment]: <> (Github: @ubolakes)
+
 # CGProject
 Final project for *Fondamenti di Computer Graphics M - modulo 1* class
 
