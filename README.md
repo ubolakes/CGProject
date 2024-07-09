@@ -8,7 +8,7 @@ Final project for Fondamenti di Computer Graphics M class
 **4.** open the HTML file and click "Go Live" button on the bottom right  
 
 
-### Mandatory requests
+### Mandatory requirements
 - [x] 3D geometry displayed in perspective projection
 - [x] user input (manage 3D interaction using both the keyboard and the mouse and optionally a gamepad)
 - [x] lighting and gradient (3D objects must be illuminated by at least one light)
