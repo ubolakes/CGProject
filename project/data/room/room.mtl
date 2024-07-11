@@ -22,8 +22,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Bump TilesSlateSquare001_NRM_1K_METALNESS.png
-map_Kd TilesSlateSquare001_COL_1K_METALNESS.png
+map_Bump TilesSlateSquare001_COL_1K_METALNESS.jpg
+map_Kd TilesSlateSquare001_COL_1K_METALNESS.jpg
 
 newmtl Wall
 Ns 31.258265
@@ -34,5 +34,5 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Bump PlasterPlain001_NRM_1K_METALNESS.png
-map_Kd PlasterPlain001_COL_1K_METALNESS.png
+map_Bump PlasterPlain001_NRM_1K_METALNESS.jpg
+map_Kd PlasterPlain001_COL_1K_METALNESS.jpg
