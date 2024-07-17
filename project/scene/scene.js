@@ -26,8 +26,6 @@ class Scene {
 
         this.path = jsonPath; // saving json path
 
-        // tests
-        this.gl.enable(this.gl.DEPTH_TEST);
         // creating base shader program
         this.program = webglUtils.createProgramInfo(this.gl, ["base-vertex-shader", "base-fragment-shader"]);
 
