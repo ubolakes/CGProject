@@ -114,7 +114,8 @@ class MeshObj {
                     u_world = m4.zRotate(u_world, degToRad(this.angle));
                     this.angle = this.angle === 360 ? 0 : this.angle + 2;
                 break;
-                default: // do nothing
+                default: // notify error
+                    console.log("Non existent axis! Try with lower case letter");
                 break;
             }
         }
