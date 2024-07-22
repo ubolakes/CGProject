@@ -6,9 +6,7 @@ Github: @ubolakes
 
 /* this file contains the functions used to manage mouse interaction on canvas */
 
-// defining constants and variables
-//const max_zoom = 100;
-//const min_zoom = 1;
+// defining variables
 var drag = false;
 var old_x, oldy;
 var zoom_enabled = false;
