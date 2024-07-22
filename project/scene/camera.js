@@ -5,7 +5,7 @@ Github: @ubolakes
 */
 
 /*  this class the camera from which the oberver can see the scene, it 
-    presents to change camera position and orientation */
+    presents functions to change camera position and orientation */
 
 class Camera {
     constructor(pos, lookAt, up){
