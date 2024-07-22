@@ -124,7 +124,7 @@ class MeshObj {
             // calls gl.bindbuffer, gl.enableVertexAttribArray, gl.vertexAttribPointer
             // to pass attributes pointer to vertex shader
             webglUtils.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-            // calls gl.uniform to pass values to shadere
+            // calls gl.uniform to pass values to shader program
             webglUtils.setUniforms(programInfo, { u_world }, material);
             // calls the gl.drawArrays to draw the scene
             webglUtils.drawBufferInfo(gl, bufferInfo);
