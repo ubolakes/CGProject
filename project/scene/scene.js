@@ -115,7 +115,7 @@ class Scene {
     }
 
     // async function to load the skybox
-    // it used a cubemap texture
+    // it uses a cubemap texture
     async prepareSkybox() {
         this.skybox = [];
 
