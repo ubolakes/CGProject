@@ -21,7 +21,7 @@ class Scene {
         // checking if extension is supported by browser
         this.ext = this.gl.getExtension("WEBGL_depth_texture");
         if (!this.ext) {
-            return alert("WEBGL_depth_texture not supported!\nUse a better browser");
+            return alert("WEBGL_depth_texture not supported!\nUse a better browser :P");
         }
 
         this.path = jsonPath; // saving json path
@@ -62,11 +62,7 @@ class Scene {
 
         // for each mesh it loads infos on an array
         json.meshes.forEach(obj => {
-            if(obj.mirror) {
-                this.mesh_list.push(new Mirror(obj, this.gl));
-            } else {
-                this.mesh_list.push(new MeshObj(obj, this.gl));
-            }
+            this.mesh_list.push(new MeshObj(obj, this.gl));
         });
     }
 
