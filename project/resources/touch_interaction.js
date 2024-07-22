@@ -6,10 +6,8 @@ Github: @ubolakes
 
 /* this file contains the functions used to manage touch interaction on canvas */
 
-// defining constant and variables
+// defining variables
 // single touch point
-const max_zoom = 100;
-const min_zoom = 1;
 var old_x, old_y;
 var zoom_enabled = false;
 var dX, dY;
