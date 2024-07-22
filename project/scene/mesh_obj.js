@@ -10,13 +10,11 @@ Github: @ubolakes
 class MeshObj {
     constructor(obj, gl){
         this.name = obj.name;
-        this.obj_source = obj.obj_source;
-        this.mtl_source = obj.mtl_source;
         this.position = obj.position;
 
         this.mesh = [];
-        this.mesh.sourceMesh = this.obj_source;
-        this.mesh.fileMTL = this.mtl_source;
+        this.mesh.sourceMesh = obj.obj_source;
+        this.mesh.fileMTL = obj.mtl_source;
 
         if (obj.rotate){
             this.rotate = obj.rotate;
