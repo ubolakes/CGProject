@@ -15,7 +15,7 @@ class Camera {
         this.up = m4.normalize(m4.cross(this.right, this.forward));
     }
 
-    // rotates about camera u axis
+    // rotates about right vector
     tilt(step){
         let rotation = m4.axisRotation(this.right, (step / 2));
         this.forward = m4.transformPoint(rotation, this.forward);
@@ -25,7 +25,7 @@ class Camera {
         this.up = m4.normalize(this.up);
     }
 
-    // rotates camera view horizontally
+    // rotates about up vector
     pan(step){
         let rotation = m4.axisRotation(this.up, step * 2);
         this.forward = m4.transformPoint(rotation, this.forward);
